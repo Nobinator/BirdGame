@@ -13,17 +13,14 @@ var bread;
 var startPoint,endPoint,farPoint;
 var enemies;
 
-function preload() {
+var zero;
 
-    //game.create.texture('Y', ['7'], 64, 64);
-    //game.create.texture('G', ['2'], 64, 64);
-    //game.create.texture('Bread', ['6'], 64, 64);
+function preload() {
 
     game.load.image('bird', 'assets/bird.png');
     game.load.image('ebird', 'assets/ebird.png');
     game.load.image('bread', 'assets/bread.png');
-
-    game.create.texture('palette', ['0123456789ABCDEF'], 800/16, 40);
+    game.load.image('back', 'assets/back.png');
 
     /*
      * Координаты даны в следующей последовательности
@@ -38,35 +35,29 @@ function preload() {
      *
      */
 
+    zero = {x : game.world.centerX, y : game.world.centerY+64};
+
     // Отступ ЛЕВО/ПРАВО для стартовых точек
     const A = -64;
     // Отступ ВЕРХ/НИЗ для стартовых точек
-    const B = game.world.centerY/2;
+    const B = game.world.centerY/1.4;
 
     startPoint = [
-        {
-            x : A,
-            y : B},
-        {
-            x : game.world.width-A,
-            y : B},
-        {
-            x : A,
-            y : game.world.height-B},
-        {
-            x : game.world.width-A,
-            y : game.world.height-B}];
+        {x : A, y : B},
+        {x : game.world.width-A, y : B},
+        {x : A, y : game.world.height-B},
+        {x : game.world.width-A, y : game.world.height-B}];
 
     // Отступ ЛЕВО/ПРАВО для конечных точек (от центра)
     const C = 96;
     // Отступ ВЕРХ/НИЗ для стартовых точек (от центра)
-    const D = 96;
+    const D = 64;
 
     endPoint = [
-        {x : game.world.centerX-C, y : game.world.centerY-D},
-        {x : game.world.centerX+C, y : game.world.centerY-D},
-        {x : game.world.centerX-C, y : game.world.centerY+D},
-        {x : game.world.centerX+C, y : game.world.centerY+D}];
+        {x : zero.x-C, y : zero.y-D},
+        {x : zero.x+C, y : zero.y-D},
+        {x : zero.x-C, y : zero.y+D},
+        {x : zero.x+C, y : zero.y+D}];
 
     farPoint = {x : -100, y : -100};
 
@@ -75,44 +66,27 @@ function preload() {
 function create() {
 
     // Заливаем фон цветом
-    game.stage.backgroundColor = '#CFFFF2';
+    game.stage.backgroundColor = '#626973';
 
-
-
-    //=== Текст и палитра вверху экрана для удобства ==========================
-    /*game.add.text(16, 48,
-        '0\t\t\t\t\t1\t\t\t\t\t2\t\t\t\t\t' +
-        '3\t\t\t\t\t4\t\t\t\t\t5\t\t\t\t\t' +
-        '6\t\t\t\t7\t\t\t\t\t8\t\t\t\t9\t\t\t\t' +
-        'A\t\t\t\tB\t\t\t\t\tC\t\t\t\tD\t\t\t' +
-        'E\t\t\t\tF', { fill: '#000000' });
-    game.add.sprite(0,0,'palette');*/
-    //=========================================================================
-
-
+    var back = game.add.sprite(0,0, 'back');
 
     //=== Хлебушек в середине поля ============================================
-    bread = game.add.sprite(game.world.centerX, game.world.centerY, 'bread');
+    bread = game.add.sprite(zero.x,zero.y, 'bread');
     bread.anchor.setTo(0.5);
     bread.scale.setTo(0.8);
     //=========================================================================
 
+    // Активируем физику!
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // Создаем главного персонажа - птицу
-    bird = birdInstance(game.world.centerX, game.world.centerY-64);
-
-    bird.name = 'bird';
+    bird = birdInstance(zero.x, zero.y-64);
 
     // Создаем группу для враждебных птиц (Группа лучше чем массив, потому что с группой обжно обрабатывать коллизию легко)
     enemies = enemyManager();
     enemies.new(1);
 
-    //=== Физика ==============================================================
-
-    game.physics.arcade.enable(enemies);
     game.physics.arcade.enable(bird);
-    //=========================================================================
 
 
     // Повторение enemies.push каждую секунду
@@ -125,8 +99,7 @@ function create() {
 function update() {
     handleInput();
 
-    //console.log('P>>',enemies.getAt(0).position);
-
+    // Обработка пересечений bird и enemiesс коллбеком collisionHandler
     game.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
 
 }
@@ -141,7 +114,7 @@ function render() {
 
 
 collisionHandler = function(obj1, obj2){
-    console.log('[-> ] Hit!');
+    //console.log('[ # ] Kicked!');
     obj2.pop();
 };
 
@@ -231,7 +204,7 @@ enemyManager = function(){
                     this.currtween = game.add.tween(this).to({x: pos.x, y: pos.y}, duration, null, true);
                     this.currtween.onComplete.add(function(){
                         //this.tint = 0xff0000; // red
-                        console.log('[ ! ] Enemy have reached the bread');
+                        console.log('[!!!] Enemy have reached the bread');
                     },this);
                 };
                 // Спавн инициирует перемещение объекта в начальную точку и запуск следования в конечную точку
@@ -276,21 +249,20 @@ enemyManager = function(){
         var pushIt = function(item){
             var way = game.rnd.integerInRange(0, 3);
             item.push(way);
-            console.log('[ + ] New enemy. Way : ',way);
+            //console.log('[ @ ] Enemy on the way : ',way);
         };
 
         var getInActive = function(){
             for (var i = 0; i < g.children.length; i++) {
                 var n = g.getAt(i);
                 if(!n.isActive){
-                    console.log('[ V ] Enemy status : free');
                     return n;
                 }
             }
-            console.log('[ V ] Enemy status : new',g.children.length);
+            console.log('[ + ] +1 to enemies list. Len : ',g.children.length);
             g.new(1);
 
-            console.log('[ V ] New ',g.children.length);
+            //console.log('[ V ] New ',g.children.length);
             return g.getAt(g.children.length-1);
         };
 

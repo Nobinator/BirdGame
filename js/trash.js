@@ -1,7 +1,46 @@
 var game = new Phaser.Game(800,600,Phaser.AUTO,'game',{preload: preload,create: create,update: update});
 
 /* Свалка какого-то кода */
+/*
 
+
+
+
+
+
+
+
+
+ //game.create.texture('palette', ['0123456789ABCDEF'], 800/16, 40);
+
+ //game.create.texture('Y', ['7'], 64, 64);
+ //game.create.texture('G', ['2'], 64, 64);
+ //game.create.texture('Bread', ['6'], 64, 64);
+
+ /*game.add.text(16, 48,'ouch', { fill: '#000000' });
+ game.add.sprite(0,0,'palette');*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 var ground;
 
 var boxes;
