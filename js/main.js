@@ -1,5 +1,13 @@
 var game = new Phaser.Game(800,600,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
 
+
+/*
+
+ http://localhost/PhaserProjects/BirdGame/index.html
+
+ */
+
+
 var bird;
 var bread;
 var startPoint,endPoint,farPoint;
@@ -7,27 +15,28 @@ var enemies;
 
 function preload() {
 
-    game.create.texture('Y', ['7'], 64, 64);
-    game.create.texture('G', ['2'], 64, 64);
-    game.create.texture('Bread', ['6'], 64, 64);
+    //game.create.texture('Y', ['7'], 64, 64);
+    //game.create.texture('G', ['2'], 64, 64);
+    //game.create.texture('Bread', ['6'], 64, 64);
 
     game.load.image('bird', 'assets/bird.png');
     game.load.image('ebird', 'assets/ebird.png');
+    game.load.image('bread', 'assets/bread.png');
 
     game.create.texture('palette', ['0123456789ABCDEF'], 800/16, 40);
 
     /*
-    * Координаты даны в следующей последовательности
-    *
-    * [0] = TOP_LEFT
-    * [1] = TOP_RIGHT
-    * [2] = BOTTOM_LEFT
-    * [3] = BOTTOM_RIGHT
-    *
-    * [1][2]
-    * [3][4]
-    *
-    */
+     * Координаты даны в следующей последовательности
+     *
+     * [0] = TOP_LEFT
+     * [1] = TOP_RIGHT
+     * [2] = BOTTOM_LEFT
+     * [3] = BOTTOM_RIGHT
+     *
+     * [1][2]
+     * [3][4]
+     *
+     */
 
     // Отступ ЛЕВО/ПРАВО для стартовых точек
     const A = -64;
@@ -71,20 +80,21 @@ function create() {
 
 
     //=== Текст и палитра вверху экрана для удобства ==========================
-    game.add.text(16, 48,
+    /*game.add.text(16, 48,
         '0\t\t\t\t\t1\t\t\t\t\t2\t\t\t\t\t' +
         '3\t\t\t\t\t4\t\t\t\t\t5\t\t\t\t\t' +
         '6\t\t\t\t7\t\t\t\t\t8\t\t\t\t9\t\t\t\t' +
         'A\t\t\t\tB\t\t\t\t\tC\t\t\t\tD\t\t\t' +
         'E\t\t\t\tF', { fill: '#000000' });
-    game.add.sprite(0,0,'palette');
+    game.add.sprite(0,0,'palette');*/
     //=========================================================================
 
 
 
     //=== Хлебушек в середине поля ============================================
-    bread = game.add.sprite(game.world.centerX, game.world.centerY, 'Bread');
+    bread = game.add.sprite(game.world.centerX, game.world.centerY, 'bread');
     bread.anchor.setTo(0.5);
+    bread.scale.setTo(0.8);
     //=========================================================================
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -125,8 +135,8 @@ function render() {
 
     //game.debug.body(bird);
     /*enemies.forEachAlive(function(sp){
-        game.debug.body(sp);
-    },this)*/
+     game.debug.body(sp);
+     },this)*/
 }
 
 
@@ -220,7 +230,7 @@ enemyManager = function(){
                     var duration = (Phaser.Point.distance(this, pos) / this.speed) * 1000;
                     this.currtween = game.add.tween(this).to({x: pos.x, y: pos.y}, duration, null, true);
                     this.currtween.onComplete.add(function(){
-                        this.tint = 0xff0000; // red
+                        //this.tint = 0xff0000; // red
                         console.log('[ ! ] Enemy have reached the bread');
                     },this);
                 };
@@ -235,7 +245,7 @@ enemyManager = function(){
                     this.scale.x = (2*(wayId===0 || wayId===2) -1)*this.basescale;
                     e.setPos(startPoint[wayId]);
                     this.moveToEnd(endPoint[wayId]);
-                    this.tint = 0xffbf00; // orange
+                    //this.tint = 0xffbf00; // orange
                     e.isActive = true;
                 };
 
@@ -248,7 +258,7 @@ enemyManager = function(){
                     if(e.isActive) {
                         e.setPos(farPoint);
                         e.currtween.stop();
-                        this.tint = 0x000000; // black
+                        //this.tint = 0x000000; // black
                         e.isActive = false;
                     }
                 };
@@ -293,32 +303,3 @@ enemyManager = function(){
 
     return g;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
