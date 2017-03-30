@@ -288,7 +288,6 @@ enemyManager = function(){
                             e.body.velocity.x = this.game.rnd.integerInRange(10, 500);
                         }
                         e.body.acceleration.y = 3000;
-                        //e.angle = 180;
                         console.log('Kicked!');
                     }
 
