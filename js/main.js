@@ -24,7 +24,7 @@ function preload() {
     game.load.image('bread', 'assets/bread.png');
     game.load.image('back', 'assets/back.png');
 
-    game.create.texture('button', ['9'], 64, 64);
+    game.create.texture('button', ['9'], 80, 80);
 
     /*
      * Координаты даны в следующей последовательности
@@ -122,6 +122,12 @@ function update() {
     // Обработка пересечений bird и enemiesс коллбеком collisionHandler
     game.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
 
+    enemies.forEach(function(enemy){
+        if(enemy.isActive && enemy.y > game.world.height){
+            enemy.pop();
+        }
+    });
+
 }
 
 function render() {
@@ -140,7 +146,7 @@ click = function(button){
 
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');
-    obj2.pop();
+    obj2.kick();
 };
 
 handleInput = function(){
@@ -245,6 +251,8 @@ enemyManager = function(){
                     this.moveToEnd(endPoint[wayId]);
                     //this.tint = 0xffbf00; // orange
                     e.isActive = true;
+                    e.status = 'active';
+                    e.wayId = wayId;
                 };
 
                 e.setPos = function(a){
@@ -254,11 +262,37 @@ enemyManager = function(){
 
                 e.pop = function(){
                     if(e.isActive) {
+
+                        e.body.velocity.setTo(0);
+                        e.body.acceleration.setTo(0);
                         e.setPos(farPoint);
                         e.currtween.stop();
                         //this.tint = 0x000000; // black
                         e.isActive = false;
+                        e.status = 'free';
+                        e.wayId = -1;
                     }
+                };
+
+                e.kick = function(){
+                    if(e.status !== 'kicked') {
+                        e.status = 'kicked';
+                        e.currtween.stop();
+                        e.body.velocity.y = this.game.rnd.integerInRange(-600, -1200);
+
+
+
+                        if(e.wayId === 0 || e.wayId === 2) {
+                            e.body.velocity.x = this.game.rnd.integerInRange(-500, -10);
+                        }else{
+                            e.body.velocity.x = this.game.rnd.integerInRange(10, 500);
+                        }
+                        e.body.acceleration.y = 3000;
+                        //e.angle = 180;
+                        console.log('Kicked!');
+                    }
+
+
                 };
 
                 e.isActive = false;
