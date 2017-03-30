@@ -15,12 +15,16 @@ var enemies;
 
 var zero;
 
+var TLB,TRB,BLB,BRB;
+
 function preload() {
 
     game.load.image('bird', 'assets/bird.png');
     game.load.image('ebird', 'assets/ebird.png');
     game.load.image('bread', 'assets/bread.png');
     game.load.image('back', 'assets/back.png');
+
+    game.create.texture('button', ['9'], 64, 64);
 
     /*
      * Координаты даны в следующей последовательности
@@ -94,6 +98,22 @@ function create() {
 
 
 
+    TLB = game.add.button(80, game.world.centerY - 80, 'button', click, this);
+    TLB.id = 0;
+    TLB.anchor.setTo(0.5);
+
+    TRB = game.add.button(game.world.width -80, game.world.centerY - 80, 'button', click, this);
+    TRB.id = 1;
+    TRB.anchor.setTo(0.5);
+
+    BLB = game.add.button(80, game.world.centerY + 80, 'button', click, this);
+    BLB.id = 2;
+    BLB.anchor.setTo(0.5);
+
+    BRB = game.add.button(game.world.width -80, game.world.centerY + 80, 'button', click, this);
+    BRB.id = 3;
+    BRB.anchor.setTo(0.5);
+
 }
 
 function update() {
@@ -111,6 +131,11 @@ function render() {
      game.debug.body(sp);
      },this)*/
 }
+
+click = function(button){
+    console.log('click : ' + button.id);
+    bird.jumpTo(button.id);
+};
 
 
 collisionHandler = function(obj1, obj2){
