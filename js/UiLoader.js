@@ -6,11 +6,9 @@ var BirdGame = BirdGame || {};
 
 var ui = {};
 
-uibang = function(){
+function loadUI(){
 
-        console.log('Lui cre');
-
-        ui.breadtext = g.add.text(16, 48,'Bread parts : '+getBreadCount(), { fill: '#000000' });
+        ui.breadtext = g.add.text(16, 48,'Bread parts : '+breadparts, { fill: '#000000' });
 
         ui.tlb = g.add.button(80, g.world.centerY - 80, 'button', ui.click, this);
         ui.tlb.id = 0;
@@ -28,9 +26,9 @@ uibang = function(){
         ui.brb.id = 3;
         ui.brb.anchor.setTo(0.5);
 
-        //TODO ui.click сделать
+}
 
-
-        //g.state.start('Gameplay');
-
-    };
+ui.click = function(button){
+    console.log('Button click : ' + button.id);
+    bird.jumpTo(button.id);
+};

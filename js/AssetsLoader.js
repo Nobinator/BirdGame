@@ -1,16 +1,11 @@
-/**
- * Created by Nobinator on 31.03.2017.
- */
-var BirdGame = BirdGame || {};
+
 
 /*
 *   Загрузка ассетов и установка окружения
 */
-
 var zero,farPoint,flyPoint,startPoint,endPoint;
 
-bobang = function(){
-        console.log('Boot pre');
+function loadAssets(){
 
         g.load.image('bird', 'assets/bird.png');
         g.load.image('ebird', 'assets/ebird.png');
@@ -53,8 +48,7 @@ bobang = function(){
             {x : zero.x+C, y : zero.y+D}];
     };
 
-bopast = function(){
-    console.log('Boot cre');
+function setupEnviroment(){
     // Фон
     g.stage.backgroundColor = '#626973';
     // Задний план

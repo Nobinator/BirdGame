@@ -1,31 +1,85 @@
 
-
-
-
-
-
-// Берем существующий объект из пространства имен или получаем пустой (В данном случае точно пустой получим)
-var BirdGame = BirdGame || {};
 // Создаем game instance
-var g = new Phaser.Game(window.innerWidth, window.innerHeight,Phaser.AUTO,'game');
+var g = new Phaser.Game(window.innerWidth, window.innerHeight,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
 
-
-
-var breadparts = 4;
-getBreadCount = function(){
-    return breadparts;
-};
-
-
-// Добавляем состояний
-//g.state.add('Boot', BirdGame.BootState);
-//g.state.add('LoadObjects', BirdGame.LoadObjectsState);
-//g.state.add('LoadUi', BirdGame.LoadUiState);
-g.state.add('Gameplay', BirdGame.GameplayState);
-// Загружаем состояние
-g.state.start('Gameplay');
 /*
 
  http://localhost/PhaserProjects/BirdGame/index.html
 
  */
+
+
+function preload(){
+    loadAssets();
+
+}
+
+function create(){
+
+    setupEnviroment();
+    instantiateGameObjects();
+    loadUI();
+
+    // Повторение enemies.push каждую секунду
+    g.time.events.loop(Phaser.Timer.SECOND, enemies.push, this);
+
+}
+
+function update(){
+
+    handleInput();
+
+    // Обработка пересечений bird и enemiesс коллбеком collisionHandler
+    g.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
+
+    enemies.forEach(function(enemy){
+        if(enemy.isActive && enemy.y > g.world.height){
+            enemy.pop();
+        }
+    });
+}
+
+function render(){
+
+}
+
+
+var breadparts = 4;
+/*getBreadCount = function(){
+    return breadparts;
+};*/
+
+function decreaseBread(){
+    breadparts -= 1;
+    ui.breadtext.setText('Bread parts : ' + breadparts);
+    if(breadparts<1){
+        //gameover();
+    }
+}
+
+
+collisionHandler = function(obj1, obj2){
+    //console.log('[ # ] Kicked!');
+    obj2.kick();
+};
+
+handleInput = function(){
+
+    if (g.input.keyboard.justPressed(Phaser.Keyboard.Q)){
+        //top-left
+        bird.jumpTo(0);
+
+    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.E)){
+        //top - right
+        bird.jumpTo(1);
+    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.A)){
+        //bot-left
+        bird.jumpTo(2);
+
+    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.D)){
+        //bottom-right
+        bird.jumpTo(3);
+
+    }
+
+};
