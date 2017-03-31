@@ -6,9 +6,7 @@ var BirdGame = BirdGame || {};
 
 var bread,bird,enemies;
 
-BirdGame.LoadObjectsState = {
-
-    create : function(){
+ojbang = function(){
 
         console.log('Obj cre');
 
@@ -32,10 +30,8 @@ BirdGame.LoadObjectsState = {
         enemies = enemyGroup();
         enemies.new(1);
 
-        g.state.start('LoadUi');
-    }
-
-};
+        //g.state.start('LoadUi');
+    };
 
 
 makeBird = function(a, b){
@@ -69,8 +65,12 @@ makeBird = function(a, b){
 };
 
 makeEnemy = function(group){
+
+    console.log('[1]startmaking. Group :'+group);
     // Создание нового объекта - спрайта
     var e = group.create(farPoint.x,farPoint.y, 'ebird');
+
+    console.log('[1]afta create '+e);
     // Центровка
     e.anchor.setTo(0.5);
 
@@ -114,7 +114,7 @@ makeEnemy = function(group){
         this.currtween.onComplete.add(function(){
             e.pop();
             breadparts -= 1;
-            checkEnd();
+            //checkEnd();
         },this);
     };
 
@@ -193,7 +193,7 @@ enemyGroup = function(){
     gp.push = function(){
 
         var pushIt = function(item){
-            var way = game.rnd.integerInRange(0, 3);
+            var way = g.rnd.integerInRange(0, 3);
             item.push(way);
             //console.log('[ @ ] Enemy on the way : ',way);
         };
@@ -213,7 +213,7 @@ enemyGroup = function(){
         };
 
         var act = getInActive();
-        if(act !== undefined ) {
+        if(act !== -1 ) {
             //console.log('Spawned Item ', e);
             pushIt(act);
         }

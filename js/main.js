@@ -16,13 +16,14 @@ getBreadCount = function(){
     return breadparts;
 };
 
+
 // Добавляем состояний
-g.state.add('Boot', BirdGame.BootState);
-g.state.add('LoadObjects', BirdGame.LoadObjectsState);
-g.state.add('LoadUi', BirdGame.LoadUiState);
+//g.state.add('Boot', BirdGame.BootState);
+//g.state.add('LoadObjects', BirdGame.LoadObjectsState);
+//g.state.add('LoadUi', BirdGame.LoadUiState);
 g.state.add('Gameplay', BirdGame.GameplayState);
 // Загружаем состояние
-g.state.start('Boot');
+g.state.start('Gameplay');
 /*
 
  http://localhost/PhaserProjects/BirdGame/index.html

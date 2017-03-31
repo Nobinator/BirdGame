@@ -6,9 +6,10 @@ var BirdGame = BirdGame || {};
 /*
 *   Загрузка ассетов и установка окружения
 */
-BirdGame.BootState = {
 
-    preload : function(){
+var zero,farPoint,flyPoint,startPoint,endPoint;
+
+bobang = function(){
         console.log('Boot pre');
 
         g.load.image('bird', 'assets/bird.png');
@@ -50,21 +51,14 @@ BirdGame.BootState = {
             {x : zero.x+C, y : zero.y-D},
             {x : zero.x-C, y : zero.y+D},
             {x : zero.x+C, y : zero.y+D}];
+    };
 
+bopast = function(){
+    console.log('Boot cre');
+    // Фон
+    g.stage.backgroundColor = '#626973';
+    // Задний план
+    g.add.sprite(0,0, 'back');
 
-
-
-    },
-
-    create : function(){
-
-        console.log('Boot cre');
-        // Фон
-        g.stage.backgroundColor = '#626973';
-        // Задний план
-        g.add.sprite(0,0, 'back');
-
-        g.state.start('LoadObjects');
-    }
-
+    //g.state.start('LoadObjects');
 };

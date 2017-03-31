@@ -6,9 +6,7 @@ var BirdGame = BirdGame || {};
 
 var ui = {};
 
-BirdGame.LoadUiState = {
-
-    create : function(){
+uibang = function(){
 
         console.log('Lui cre');
 
@@ -33,8 +31,6 @@ BirdGame.LoadUiState = {
         //TODO ui.click сделать
 
 
-        g.state.start('Gameplay');
+        //g.state.start('Gameplay');
 
-    }
-
-};
+    };

@@ -5,7 +5,19 @@ var BirdGame = BirdGame || {};
 
 BirdGame.GameplayState = {
 
+    preload : function(){
+
+        bobang();
+    },
+
     create : function(){
+
+        bopast();
+
+        ojbang();
+
+
+        uibang();
 
         console.log('Gam cre');
         // Повторение enemies.push каждую секунду
@@ -25,7 +37,7 @@ BirdGame.GameplayState = {
         g.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
 
         enemies.forEach(function(enemy){
-            if(enemy.isActive && enemy.y > game.world.height){
+            if(enemy.isActive && enemy.y > g.world.height){
                 enemy.pop();
             }
         });
