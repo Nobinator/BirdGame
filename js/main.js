@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800,600,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
+var game = new Phaser.Game(window.innerWidth, window.innerHeight,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
 
 
 /*
@@ -10,7 +10,7 @@ var game = new Phaser.Game(800,600,Phaser.AUTO,'game',{preload: preload,create: 
 
 var bird;
 var bread;
-var startPoint,endPoint,farPoint;
+var startPoint,endPoint,farPoint,flyPoint;
 var enemies;
 
 var zero;
@@ -24,7 +24,7 @@ function preload() {
     game.load.image('bread', 'assets/bread.png');
     game.load.image('back', 'assets/back.png');
 
-    game.create.texture('button', ['9'], 80, 80);
+    game.create.texture('button', ['7'], 80, 80);
 
     /*
      * Координаты даны в следующей последовательности
@@ -64,7 +64,7 @@ function preload() {
         {x : zero.x+C, y : zero.y+D}];
 
     farPoint = {x : -100, y : -100};
-
+    flyPoint = {x : game.world.width*(4/5), y : -100};
 }
 
 function create() {
@@ -236,8 +236,25 @@ enemyManager = function(){
                     this.currtween.onComplete.add(function(){
                         //this.tint = 0xff0000; // red
                         console.log('[!!!] Enemy have reached the bread');
+
+                        e.status = 'fly';
+                        var duration = (Phaser.Point.distance(this, zero) / this.speed) * 200;
+                        this.currtween = game.add.tween(this).to({x: zero.x, y: zero.y}, duration, null, true);
+                        this.currtween.onComplete.add(function(){
+                            this.flyAway();
+                        },this);
+
                     },this);
                 };
+
+                e.flyAway = function(){
+                    var duration = (Phaser.Point.distance(this, flyPoint) / this.speed) * 100;
+                    this.currtween = game.add.tween(this).to({x: flyPoint.x, y: flyPoint.y}, duration, null, true);
+                    this.currtween.onComplete.add(function(){
+                        e.pop();
+                    },this);
+                };
+
                 // Спавн инициирует перемещение объекта в начальную точку и запуск следования в конечную точку
                 e.push = function(wayId){
 
