@@ -17,6 +17,9 @@ var zero;
 
 var TLB,TRB,BLB,BRB;
 
+var breadparts = 3;
+var breadtext;
+
 function preload() {
 
     game.load.image('bird', 'assets/bird.png');
@@ -114,6 +117,9 @@ function create() {
     BRB.id = 3;
     BRB.anchor.setTo(0.5);
 
+
+    breadtext = game.add.text(16, 48,'Bread parts : '+breadparts, { fill: '#000000' });
+
 }
 
 function update() {
@@ -168,6 +174,11 @@ handleInput = function(){
 
     }
 
+};
+
+checkEnd = function(){
+    breadtext.setText('Bread parts : '+breadparts);
+    if(breadparts<1){console.log('Game Over');}
 };
 
 birdInstance = function(a, b){
@@ -252,6 +263,8 @@ enemyManager = function(){
                     this.currtween = game.add.tween(this).to({x: flyPoint.x, y: flyPoint.y}, duration, null, true);
                     this.currtween.onComplete.add(function(){
                         e.pop();
+                        breadparts -= 1;
+                        checkEnd();
                     },this);
                 };
 
@@ -292,6 +305,7 @@ enemyManager = function(){
                 };
 
                 e.kick = function(){
+                    if(e.status !== 'fly')
                     if(e.status !== 'kicked') {
                         e.status = 'kicked';
                         e.currtween.stop();
