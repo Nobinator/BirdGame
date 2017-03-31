@@ -18,10 +18,15 @@ var game = new Phaser.Game(800,600,Phaser.AUTO,'game',{preload: preload,create: 
  //game.create.texture('Bread', ['6'], 64, 64);
 
  /*game.add.text(16, 48,'ouch', { fill: '#000000' });
- game.add.sprite(0,0,'palette');*/
+ game.add.sprite(0,0,'palette');
 
 
 
+
+//=== Хлебушек в середине поля ============================================
+BirdGame.gameObject.bread = g.add.sprite(zero.x,zero.y, 'bread');
+bread.anchor.setTo(0.5);
+bread.scale.setTo(0.8);
 
 
 
