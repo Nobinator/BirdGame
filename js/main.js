@@ -1,6 +1,6 @@
 
 // Создаем game instance
-var g = new Phaser.Game(window.innerWidth, window.innerHeight,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
+var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
 
 /*
 
