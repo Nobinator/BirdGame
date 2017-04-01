@@ -46,6 +46,8 @@ function loadAssets(){
             {x : zero.x+C, y : zero.y-D},
             {x : zero.x-C, y : zero.y+D},
             {x : zero.x+C, y : zero.y+D}];
+
+
     }
 
 function setupEnviroment(){

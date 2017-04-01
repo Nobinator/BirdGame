@@ -11,6 +11,7 @@ var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.
 
 function preload(){
     loadAssets();
+    preloadUI();
 
 }
 

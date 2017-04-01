@@ -2,7 +2,38 @@
 var ui = {};
 
 var leadback;
-var textA;
+var textA,textB;
+
+
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+
+    //  'active' means all requested fonts have finished loading
+    active: function() {
+        g.time.events.add(Phaser.Timer.SECOND, updFont, this);
+
+
+        },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+        families: ['Montserrat']
+    }
+
+};
+
+function updFont(){
+    textA.font = 'Montserrat';
+    textA.fontSize = 40;
+    textB.font = 'Montserrat';
+    textB.fontSize = 32;
+}
+
+function preloadUI(){
+
+    //  Load the Google WebFont Loader script
+    g.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+}
 
 function loadUI(){
 
@@ -54,7 +85,7 @@ function loadUI(){
         wordWrap: true,
         wordWrapWidth: leadback.width};
     
-    var textB = g.add.text(0, 0,'1. Bronydell - 1024\n2. Nobi - 502\n3. Jacksepticeye - 501', textBstyle);
+    textB = g.add.text(0, 0,'1. Bronydell - 1024\n2. Nobi - 502\n3. Jacksepticeye - 501', textBstyle);
     textB.anchor.set(0.5,0);
     textB.x = g.world.centerX;
     textB.y = g.world.height*(3/8);
