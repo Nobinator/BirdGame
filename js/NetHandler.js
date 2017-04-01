@@ -1,44 +1,80 @@
-/**
- * Created by Nobinator on 01.04.2017.
- */
+var curData;
+/*
 
-var user_id,message_id;
+Вызывая post вызывается http://localhost/api/getHighScores что ведет за собой
+POST http://localhost/api/getHighScores 404 (Not Found)
+т.е в сурсах телеграма они даже не засвечитвают бот токен, а отправляют на внутренний сервер, с которого уже идет запрос на сервер телеграма
+
+
+*/
+function post(url, data, cb, failCb) {
+    var xhr = new XMLHttpRequest();
+    var body = [];
+    for(var i in data) {
+        body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
+    }
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            var resp = xhr.responseText;
+            cb(JSON.parse(resp))
+        } else if (failCb) {
+            failCb()
+        }
+    };
+    xhr.open("POST", url, true);
+    xhr.send(body.join('&'));
+}
+
+function sendScore(sc) {
+    if (!curData) {
+        //ge('updating').style.display = 'none';
+        return;
+    }
+    console.log('/api/setScore');
+    post('/api/setScore', {
+        data: curData,
+        score: sc || 0
+    }, function(result) {
+        console.log('/api/setScore SUCCESS ');
+        console.log('setScore result',result);
+        console.log(result.scores);
+        if (result.new) {
+            //ge('score_share').className = 'score_share shown';
+        }
+    }, function() {
+        console.log('/api/setScore FAIL');
+        //ge('updating').style.display = 'none';
+    })
+}
+
+function getHighScores() {
+    if (!curData) return;
+
+    console.log('/api/getHighScores');
+
+    post('/api/getHighScores', { data: curData}, function(result) {
+        console.log('/api/getHighScores SUCCESS');
+        console.log('getHighScores result',result);
+        //console.log(result.scores);
+    }, function(){
+        console.log('/api/getHighScores FAIL');
+    })
+}
 
 function readParameters(){
 
-    // Получение параметра player_info
-    var player_info = g.net.getQueryString()['player_info'];
-    // Расшифровка base64
-    player_info = atob(player_info);
-    // Парсинг из Json
-    player_info = JSON.parse(player_info);
-
-    user_id = player_info['i'];
-    message_id = player_info['u'];
-    console.log(user_id,message_id);
+    //var player_info = g.net.getQueryString()['player_info'];
 
 
-}
+    //abc.xyz/gdc/#eyJ1IjoxMjI
+    // Получение текста после #
+    curData = (location.hash || '').substr(1);
+    curData = curData.replace("/[\?&].*/g, ''");
 
-function getGameHighScores(){
+    console.log('curData',curData);
 
-    // some request
-
-    var ans =
-        '{ "ok":true, "result":[ ' +
-        '{ "position":1, "user":{ "id":122921921, "first_name":"Kirill", "last_name":"Evdokimov", "username":"Nobinator" }, "score":345 }, ' +
-        '{ "position":2, "user":{ "id":3527572, "first_name":"Rostislav", "last_name":"Nikishin", "username":"Bronydell" }, "score":228 } ] }';
-
-
-    var data = JSON.parse(ans);
-    console.log(data);
-
-    var text = '';
-
-    data['result'].forEach(function(item) {
-        text += item['position'] + '. ' + item['user']['username'] + ' - ' +item['score'] + '\n';
-    });
-
-    updLead(text);
+    // curData будет содержать всё необходимое для отправки запросов в telegram,
+    // а она сама получается тоже из телеграма путем махинаций на сервере Ростика.
+    // Не знаю что там творится, главное работает.
 
 }

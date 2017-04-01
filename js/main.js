@@ -21,9 +21,11 @@ function create(){
     instantiateGameObjects();
     loadUI();
 
-    readParameters();
+    //readParameters();
 
-    getGameHighScores();
+    //getGameHighScores();
+
+    //getHighScores();
 
     // Повторение enemies.push каждую секунду
     g.time.events.loop(Phaser.Timer.SECOND, enemies.push, this);
