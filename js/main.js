@@ -27,8 +27,7 @@ function create(){
 
     //getHighScores();
 
-    // Повторение enemies.push каждую секунду
-    g.time.events.loop(Phaser.Timer.SECOND, enemies.push, this);
+    gameover();
 
 }
 
@@ -60,7 +59,7 @@ function decreaseBread(){
     breadparts -= 1;
     ui.breadtext.setText('Bread parts : ' + breadparts);
     if(breadparts<1){
-        //gameover();
+        gameover();
     }
 }
 

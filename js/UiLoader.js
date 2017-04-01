@@ -65,7 +65,6 @@ function loadUI(){
 
     leadback = g.add.sprite(0, 0, graphics.generateTexture());
     graphics.destroy();
-    //leadback.visible = false;
 
     var textAstyle = {
         font: "40px Arial",
@@ -101,6 +100,14 @@ ui.click = function(button){
     bird.jumpTo(button.id);
 };
 
-function showLead(){
+function hideLead(){
+    leadback.visible = false;
+    textA.visible = false;
+    textB.visible = false;
+}
+
+function showLead() {
     leadback.visible = true;
+    textA.visible = true;
+    textB.visible = true;
 }
