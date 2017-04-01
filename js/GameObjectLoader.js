@@ -183,6 +183,13 @@ function instantiateGameObjects(){
                 }
             };
 
+            gp.popAll = function(){
+                for (var i = 0; i < gp.children.length; i++) {
+                    var n = gp.getAt(i);
+                    n.pop();
+                }
+            };
+
             return gp;
         }
 

@@ -27,8 +27,8 @@ function create(){
 
     //getHighScores();
 
-    gameover();
-
+    //gameover();
+    start();
 }
 
 function update(){
@@ -48,21 +48,6 @@ function update(){
 function render(){
 
 }
-
-
-var breadparts = 4;
-/*getBreadCount = function(){
-    return breadparts;
-};*/
-
-function decreaseBread(){
-    breadparts -= 1;
-    ui.breadtext.setText('Bread parts : ' + breadparts);
-    if(breadparts<1){
-        gameover();
-    }
-}
-
 
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');

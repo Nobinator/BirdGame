@@ -27,6 +27,10 @@ function updFont(){
     textB.fontSize = 32;
 }
 
+function updBreadText(value){
+    ui.breadtext.setText('Bread parts : ' + value);
+}
+
 function updLead(t){
 
     textB.setText(t);
@@ -40,23 +44,39 @@ function preloadUI(){
 
 function loadUI(){
 
+    function addButtons(){
+
+        var w = g.world.width;
+        var h = g.world.height;
+
+        var bpm = [
+
+            {x : w*(1/8), y : h*(7.5/10)},
+            {x : w*(7/8), y : h*(7.5/10)},
+            {x : w*(1/8), y : h*(9/10)},
+            {x : w*(7/8), y : h*(9/10)}
+        ];
+
+        ui.tlb = g.add.button(bpm[0].x,bpm[0].y, 'button', gameInput.action, this);
+        ui.tlb.id = 0;
+        ui.tlb.anchor.setTo(0.5);
+
+        ui.trb = g.add.button(bpm[1].x,bpm[1].y, 'button', gameInput.action, this);
+        ui.trb.id = 1;
+        ui.trb.anchor.setTo(0.5);
+
+        ui.blb = g.add.button(bpm[2].x,bpm[2].y, 'button', gameInput.action, this);
+        ui.blb.id = 2;
+        ui.blb.anchor.setTo(0.5);
+
+        ui.brb = g.add.button(bpm[3].x,bpm[3].y, 'button', gameInput.action, this);
+        ui.brb.id = 3;
+        ui.brb.anchor.setTo(0.5);
+    }
+
     ui.breadtext = g.add.text(16, 48,'Bread parts : '+breadparts, { fill: '#000000' });
+    // button pads matrix
 
-    /*ui.tlb = g.add.button(80, g.world.centerY - 80, 'button', ui.click, this);
-    ui.tlb.id = 0;
-    ui.tlb.anchor.setTo(0.5);
-
-    ui.trb = g.add.button(g.world.width -80, g.world.centerY - 80, 'button', ui.click, this);
-    ui.trb.id = 1;
-    ui.trb.anchor.setTo(0.5);
-
-    ui.blb = g.add.button(80, g.world.centerY + 80, 'button', ui.click, this);
-    ui.blb.id = 2;
-    ui.blb.anchor.setTo(0.5);
-
-    ii.brb = g.add.button(g.world.width -80, g.world.centerY + 80, 'button', ui.click, this);
-    ui.brb.id = 3;
-    ui.brb.anchor.setTo(0.5);*/
 
     var graphics = g.add.graphics(0, 0);
 
@@ -91,14 +111,11 @@ function loadUI(){
     textB.anchor.set(0.5,0);
     textB.x = g.world.centerX;
     textB.y = g.world.height*(3/8);
-        //\n1. Bronydell - 1024\n2. Nobi - 502\n3.Jacksepticeye - 501
+
+
+    addButtons();
 
 }
-
-ui.click = function(button){
-    console.log('Button click : ' + button.id);
-    bird.jumpTo(button.id);
-};
 
 function hideLead(){
     leadback.visible = false;
