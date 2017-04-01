@@ -11,9 +11,7 @@ WebFontConfig = {
     //  'active' means all requested fonts have finished loading
     active: function() {
         g.time.events.add(Phaser.Timer.SECOND, updFont, this);
-
-
-        },
+    },
 
     //  The Google Fonts we want to load (specify as many as you like in the array)
     google: {
@@ -27,6 +25,11 @@ function updFont(){
     textA.fontSize = 40;
     textB.font = 'Montserrat';
     textB.fontSize = 32;
+}
+
+function updLead(t){
+
+    textB.setText(t);
 }
 
 function preloadUI(){
