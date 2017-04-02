@@ -7,6 +7,13 @@ POST http://localhost/api/getHighScores 404 (Not Found)
 
 
 */
+
+function poper(){
+    post('/telegram', function(data){
+        console.log(data);
+    });
+}
+
 function post(url, data, cb, failCb) {
     var xhr = new XMLHttpRequest();
     var body = [];
@@ -14,6 +21,7 @@ function post(url, data, cb, failCb) {
         body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
     }
     xhr.onreadystatechange = function() {
+        //noinspection EqualityComparisonWithCoercionJS
         if(xhr.readyState == 4 && xhr.status == 200) {
             var resp = xhr.responseText;
             cb(JSON.parse(resp))
@@ -25,13 +33,15 @@ function post(url, data, cb, failCb) {
     xhr.send(body.join('&'));
 }
 
+
+
 function sendScore(sc) {
     if (!curData) {
         //ge('updating').style.display = 'none';
         return;
     }
     console.log('/api/setScore');
-    post('/api/setScore', {
+    post('/setScore', {
         data: curData,
         score: sc || 0
     }, function(result) {
@@ -52,7 +62,7 @@ function getHighScores() {
 
     console.log('/api/getHighScores');
 
-    post('/api/getHighScores', { data: curData}, function(result) {
+    post('/getHighScores', { data: curData}, function(result) {
         console.log('/api/getHighScores SUCCESS');
         console.log('getHighScores result',result);
         //console.log(result.scores);

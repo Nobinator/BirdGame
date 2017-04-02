@@ -27,6 +27,11 @@ function updFont(){
     textB.fontSize = 32;
 }
 
+function setScoreText(value){
+    console.log('Final score : '+value);
+    textA.setText('You scored\n\n'+value);
+}
+
 function updBreadText(value){
     ui.breadtext.setText('Bread parts : ' + value);
 }
@@ -36,7 +41,7 @@ function updLead(t){
     textB.setText(t);
 }
 
-function preloadUI(){
+function preloadUI(){+
 
     //  Load the Google WebFont Loader script
     g.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
@@ -124,7 +129,7 @@ function hideLead(){
 }
 
 function showLead() {
-    leadback.visible = true;
+    //leadback.visible = true;
     textA.visible = true;
     textB.visible = true;
 }

@@ -6,7 +6,7 @@ var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.
 
  http://localhost/PhaserProjects/BirdGame/index.html
 
- */
+*/
 
 
 function preload(){
@@ -21,13 +21,6 @@ function create(){
     instantiateGameObjects();
     loadUI();
 
-    //readParameters();
-
-    //getGameHighScores();
-
-    //getHighScores();
-
-    //gameover();
     start();
 }
 
@@ -51,7 +44,8 @@ function render(){
 
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');
-    obj2.kick();
+    if(obj2.kick())
+        score +=1;
 };
 
 handleInput = function(){

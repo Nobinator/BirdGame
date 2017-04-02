@@ -134,6 +134,8 @@ function instantiateGameObjects(){
                         }
                         e.body.acceleration.y = 3000;
                         console.log('Kicked!');
+
+                        return true;
                     }
 
 

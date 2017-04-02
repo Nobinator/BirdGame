@@ -1,6 +1,8 @@
 
 var breadparts;
 
+var score;
+
 function decreaseBread(){
     breadparts -= 1;
     updBreadText(breadparts);
@@ -22,6 +24,8 @@ function start(){
     breadparts = 4;
     updBreadText(breadparts);
 
+    score = 0;
+
     lifestatus = 'start';
 
 }
@@ -36,6 +40,7 @@ function gameover(){
     g.time.events.remove(spawnloop);
     enemies.popAll();
 
+    setScoreText(score);
     showLead();
 
     lifestatus = 'gameover';
