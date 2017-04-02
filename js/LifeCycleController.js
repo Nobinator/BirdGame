@@ -5,6 +5,7 @@ var score;
 
 function decreaseBread(){
     breadparts -= 1;
+    bread.frame = 4 - breadparts;
     updBreadText(breadparts);
     if(breadparts<1){
         gameover();

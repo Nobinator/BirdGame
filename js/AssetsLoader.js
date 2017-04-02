@@ -9,7 +9,8 @@ function loadAssets(){
 
         g.load.image('bird', 'assets/bird.png');
         g.load.image('ebird', 'assets/ebird.png');
-        g.load.image('bread', 'assets/bread.png');
+        //g.load.image('bread', 'assets/bread.png');
+        g.load.spritesheet('bread', 'assets/breadsheet.png', 128, 128, 5);
         g.load.image('back', 'assets/back.png');
         g.create.texture('button', ['7'], 80, 80);
 
