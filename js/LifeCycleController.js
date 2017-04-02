@@ -17,8 +17,6 @@ var lifestatus;
 
 function start(){
 
-    show(gamePanel);
-
     // Повторение enemies.push каждую секунду
     spawnloop = g.time.events.loop(Phaser.Timer.SECOND, enemies.push, this);
 

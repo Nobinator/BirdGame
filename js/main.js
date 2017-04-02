@@ -8,18 +8,21 @@ var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.
 
 */
 
+var boot,ui;
 
 function preload(){
-    loadAssets();
-    preloadUI();
+    boot = new Boot();
+    boot.loadAssets();
+    boot.setupPoints();
 
+    ui = new Ui();
 }
 
 function create(){
 
-    setupEnviroment();
+    boot.setupEnviroment();
     instantiateGameObjects();
-    loadUI();
+    ui.loadUi();
 
     start();
 }
@@ -32,6 +35,7 @@ function update(){
     g.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
 
     enemies.forEach(function(enemy){
+        // Удаляем упавших слишком низко птиц
         if(enemy.isActive && enemy.y > g.world.height){
             enemy.pop();
         }
@@ -45,8 +49,7 @@ function render(){
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');
     if(obj2.kick()) {
-        score += 1;
-        updScoreText(score);
+        increaseScore();
     }
 };
 
@@ -68,5 +71,16 @@ handleInput = function(){
         bird.jumpTo(3);
 
     }
+
+};
+
+// Коллбек загрузки шрифтов гугловых
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+    //  'active' means all requested fonts have finished loading
+    active: function(){ g.time.events.add(Phaser.Timer.SECOND, ui.updateFont, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: { families: ['Montserrat'] }
 
 };

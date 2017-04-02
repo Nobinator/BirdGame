@@ -5,15 +5,25 @@
 */
 var zero,farPoint,flyPoint,startPoint,endPoint;
 
-function loadAssets(){
+function Boot(){
 
+    this.loadAssets = function(){
         g.load.image('bird', 'assets/bird.png');
         g.load.image('ebird', 'assets/ebird.png');
         //g.load.image('bread', 'assets/bread.png');
         g.load.spritesheet('bread', 'assets/breadsheet.png', 128, 128, 5);
         g.load.image('back', 'assets/back.png');
         g.create.texture('button', ['7'], 80, 80);
+    };
 
+    this.setupEnviroment = function(){
+        // Фон
+        g.stage.backgroundColor = '#626973';
+        // Задний план
+        g.add.sprite(0,0, 'back');
+    };
+
+    this.setupPoints = function(){
         // Координата хлебушка
         zero = {x : g.world.centerX, y : g.world.centerY+64};
         // Координата достаточно далекая, чтобы туда прятать спрайты
@@ -24,7 +34,6 @@ function loadAssets(){
         /* Координаты wayPoint'ов даны в следующей последовательности
          * [0][1]   TOP_LEFT        TOP_RIGHT
          * [2][3]   BOTTOM_LEFT     BOTTOM_RIGHT */
-
 
         // Отступ ЛЕВО/ПРАВО для стартовых точек
         const A = -64;
@@ -47,15 +56,6 @@ function loadAssets(){
             {x : zero.x+C, y : zero.y-D},
             {x : zero.x-C, y : zero.y+D},
             {x : zero.x+C, y : zero.y+D}];
-
-
-    }
-
-function setupEnviroment(){
-    // Фон
-    g.stage.backgroundColor = '#626973';
-    // Задний план
-    g.add.sprite(0,0, 'back');
-
-    //g.state.start('LoadObjects');
+    };
 }
+
