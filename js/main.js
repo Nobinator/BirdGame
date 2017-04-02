@@ -44,8 +44,10 @@ function render(){
 
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');
-    if(obj2.kick())
-        score +=1;
+    if(obj2.kick()) {
+        score += 1;
+        updScoreText(score);
+    }
 };
 
 handleInput = function(){

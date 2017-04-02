@@ -6,7 +6,6 @@ var score;
 function decreaseBread(){
     breadparts -= 1;
     bread.frame = 4 - breadparts;
-    updBreadText(breadparts);
     if(breadparts<1){
         gameover();
     }
@@ -18,12 +17,13 @@ var lifestatus;
 
 function start(){
 
-    hideLead();
+    show(gamePanel);
+
     // Повторение enemies.push каждую секунду
     spawnloop = g.time.events.loop(Phaser.Timer.SECOND, enemies.push, this);
 
     breadparts = 4;
-    updBreadText(breadparts);
+    bread.frame = 0;
 
     score = 0;
 
@@ -42,7 +42,7 @@ function gameover(){
     enemies.popAll();
 
     setScoreText(score);
-    showLead();
+    show(leadPanel);
 
     lifestatus = 'gameover';
 }

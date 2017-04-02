@@ -1,44 +1,34 @@
 
 var ui = {};
 
-var leadback;
-var textA,textB;
+var currpanel;
+
+var leadPanel;
+
+var gamePanel;
 
 
-//  The Google WebFont Loader will look for this object, so create it before loading the script.
-WebFontConfig = {
-
-    //  'active' means all requested fonts have finished loading
-    active: function() {
-        g.time.events.add(Phaser.Timer.SECOND, updFont, this);
-    },
-
-    //  The Google Fonts we want to load (specify as many as you like in the array)
-    google: {
-        families: ['Montserrat']
-    }
-
-};
 
 function updFont(){
-    textA.font = 'Montserrat';
-    textA.fontSize = 40;
-    textB.font = 'Montserrat';
-    textB.fontSize = 32;
+    leadPanel[1].font = 'Montserrat';
+    leadPanel[1].fontSize = 40;
+    leadPanel[2].font = 'Montserrat';
+    leadPanel[2].fontSize = 32;
+    gamePanel[0].font = 'Montserrat';
 }
 
 function setScoreText(value){
     console.log('Final score : '+value);
-    textA.setText('You scored\n\n'+value);
-}
-
-function updBreadText(value){
-    ui.breadtext.setText('Bread parts : ' + value);
+    leadPanel[1].setText('You scored\n\n'+value);
 }
 
 function updLead(t){
 
-    textB.setText(t);
+    leadPanel[2].setText(t);
+}
+
+function updScoreText(t){
+    gamePanel[0].setText(t);
 }
 
 function preloadUI(){+
@@ -85,7 +75,7 @@ function loadUI(){
         graphics.beginFill(0xDADADA);
         graphics.drawRect(0, 0, g.world.width, g.world.height);
 
-        leadback = g.add.sprite(0, 0, graphics.generateTexture());
+        var leadback = g.add.sprite(0, 0, graphics.generateTexture());
         graphics.destroy();
 
         var textAstyle = {
@@ -97,7 +87,7 @@ function loadUI(){
             align: "center"/*,
              backgroundColor: "#ffff00"*/ };
 
-        textA = g.add.text(0, 0,'You scored\n\n502', textAstyle);
+        var textA = g.add.text(0, 0,'You scored\n\n502', textAstyle);
         textA.anchor.set(0.5,0);
         textA.x = g.world.centerX;
         textA.y = g.world.height*(1/8);
@@ -109,31 +99,61 @@ function loadUI(){
             wordWrap: true,
             wordWrapWidth: leadback.width};
 
-        textB = g.add.text(0, 0,'1. Bronydell - 1024\n2. Nobi - 502\n3. Jacksepticeye - 501', textBstyle);
+        var textB = g.add.text(0, 0,'1. Bronydell - 1024\n2. Nobi - 502\n3. Jacksepticeye - 501', textBstyle);
         textB.anchor.set(0.5,0);
         textB.x = g.world.centerX;
         textB.y = g.world.height*(3/8);
+
+        leadPanel = [leadback,textA,textB]
     }
 
-    ui.breadtext = g.add.text(16, 48,'Bread parts : '+breadparts, { fill: '#000000' });
-    // button pads matrix
+    function loadGame(){
 
+        var scoreTextStyle = {
+            font: "72px Arial",
+            fill: "#000000",
+            wordWrap: true,
+            wordWrapWidth: g.world.width};
 
+        var scoreText = g.add.text(0, 0,'0', scoreTextStyle);
+        scoreText.anchor.set(0.5,0);
+        scoreText.x = g.world.centerX;
+        scoreText.y = g.world.height*(1/8);
+
+        gamePanel = [scoreText];
+    }
 
 
     loadLead();
+    loadGame();
+
     addButtons();
 
+    show(leadPanel);
 }
 
-function hideLead(){
-    leadback.visible = false;
-    textA.visible = false;
-    textB.visible = false;
+
+
+function show(panel){
+    if(currpanel !== undefined)
+        currpanel.forEach(function(item){
+            item.visible = false;
+        });
+    panel.forEach(function(item){
+        item.visible = true;
+    });
+    currpanel = panel;
+
 }
 
-function showLead() {
-    //leadback.visible = true;
-    textA.visible = true;
-    textB.visible = true;
-}
+
+
+//  The Google WebFont Loader will look for this object, so create it before loading the script.
+WebFontConfig = {
+    //  'active' means all requested fonts have finished loading
+    active: function(){ g.time.events.add(Phaser.Timer.SECOND, updFont, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: { families: ['Montserrat'] }
+
+};
