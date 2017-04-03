@@ -3,6 +3,7 @@ function Ui(){
 
     // public methods
     this.showGame = function(){
+        console.log('showGame',gamePanel);
         show(gamePanel);
     };
     this.showLead = function(){
@@ -15,9 +16,14 @@ function Ui(){
         leadPanel[2].fontSize = 32;
         gamePanel[0].font = 'Montserrat';
     };
-    this.setScore = function(score){
-        //TODO stub
+    this.updateScore = function(value){
+        gamePanel[0].setText(value);
     };
+
+    this.setLeadScore = function(value){
+        leadPanel[1].setText(value);
+    };
+
     this.loadUi = function() {
         gamePanel = (function () {
             var scoreTextStyle = {
@@ -66,7 +72,7 @@ function Ui(){
 
             return [leadback, textA, textB]
         }());
-        buttonPad = (function (action) {
+        buttonPad = (function () {
             var w = g.world.width;
             var h = g.world.height;
 
@@ -78,45 +84,47 @@ function Ui(){
                 {x: w * (7 / 8), y: h * (9 / 10)}
             ];
 
-            var tlb = g.add.button(bpm[0].x, bpm[0].y, 'button', action, this);
+            var tlb = g.add.button(bpm[0].x, bpm[0].y, 'button', input.bclick, this);
             tlb.id = 0;
             tlb.anchor.setTo(0.5);
 
-            var trb = g.add.button(bpm[1].x, bpm[1].y, 'button', action, this);
+            var trb = g.add.button(bpm[1].x, bpm[1].y, 'button', input.bclick, this);
             trb.id = 1;
             trb.anchor.setTo(0.5);
 
-            var blb = g.add.button(bpm[2].x, bpm[2].y, 'button', action, this);
+            var blb = g.add.button(bpm[2].x, bpm[2].y, 'button', input.bclick, this);
             blb.id = 2;
             blb.anchor.setTo(0.5);
 
-            var brb = g.add.button(bpm[3].x, bpm[3].y, 'button', action, this);
+            var brb = g.add.button(bpm[3].x, bpm[3].y, 'button', input.bclick, this);
             brb.id = 3;
             brb.anchor.setTo(0.5);
 
             return [tlb, trb, blb, brb];
         }());
-    }
-
-
-    //loadGoogleFonts
-    g.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    };
 
     // private methods
     var show = function(panel){
-        if(currpanel !== undefined)
-            currpanel.forEach(function(item){
+        if(currPanel !== undefined)
+            currPanel.forEach(function(item){
                 item.visible = false;
             });
         panel.forEach(function(item){
             item.visible = true;
         });
-        currpanel = panel;
+        currPanel = panel;
 
     };
 
     //private fields
-    var gamePanel,leadPanel,buttonPad;
+    var currPanel,gamePanel,leadPanel,buttonPad;
+
+
+
+
+    //loadGoogleFonts
+    g.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
 }
 

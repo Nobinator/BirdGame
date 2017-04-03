@@ -8,70 +8,73 @@ var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.
 
 */
 
-var boot,ui;
+var boot,ui,gameObject,input,gameManager;
 
 function preload(){
+
+    new TestObject();
+
     boot = new Boot();
     boot.loadAssets();
     boot.setupPoints();
 
     ui = new Ui();
+    gameManager = new GameManager();
 }
 
 function create(){
 
     boot.setupEnviroment();
-    instantiateGameObjects();
+    gameObject = new GameObject();
+    input = new GameInput();
     ui.loadUi();
+    ui.showLead();
+    input.setCurrAction(gameManager.start);
 
-    start();
+    debug();
 }
 
 function update(){
 
-    handleInput();
+    input.handleI();
 
     // Обработка пересечений bird и enemiesс коллбеком collisionHandler
-    g.physics.arcade.overlap(bird, enemies, collisionHandler, null, this);
-
-    enemies.forEach(function(enemy){
-        // Удаляем упавших слишком низко птиц
-        if(enemy.isActive && enemy.y > g.world.height){
-            enemy.pop();
-        }
+    gameObject.enemies.getBodies().forEach(function(item){
+        g.physics.arcade.overlap(gameObject.bird.getBody(), item, collisionHandler, null, this);
     });
+
+    gameObject.enemies.undeployFallen();
 }
 
 function render(){
+    gameObject.enemies.getBodies().forEach(function(item){
+        g.debug.body(item);
+    });
 
+    g.debug.body(gameObject.bird.getBody());
+}
+
+function debug(){
+    var graphics = g.add.graphics(0, 0);
+    graphics.beginFill(0xFF33CC);
+    endPoint.forEach(function(it){
+        graphics.drawRect(it.x, it.y, 4, 4);
+    });
+    graphics.beginFill(0xFFFF66);
+    startPoint.forEach(function(it){
+        graphics.drawRect(it.x, it.y, 4, 4);
+    });
+
+
+    //window.graphics = graphics;
+    //graphics.destroy();
 }
 
 collisionHandler = function(obj1, obj2){
     //console.log('[ # ] Kicked!');
-    if(obj2.kick()) {
-        increaseScore();
+    if(obj2.inst.kick()) {
+        gameManager.addScore(1);
     }
-};
-
-handleInput = function(){
-
-    if (g.input.keyboard.justPressed(Phaser.Keyboard.Q)){
-        //top-left
-        bird.jumpTo(0);
-
-    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.E)){
-        //top - right
-        bird.jumpTo(1);
-    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.A)){
-        //bot-left
-        bird.jumpTo(2);
-
-    } else if (g.input.keyboard.justPressed(Phaser.Keyboard.D)){
-        //bottom-right
-        bird.jumpTo(3);
-
-    }
-
 };
 
 // Коллбек загрузки шрифтов гугловых

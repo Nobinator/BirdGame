@@ -1,20 +1,23 @@
 /**
- * Created by Nobinator on 02.04.2017.
+ * Created by Nobinator on 03.04.2017.
  */
 
 
 function TestObject(){
 
-    //private
-    var killAllJews = function(){
-        console.log('No');
+    this.foo = function(){
+        // smth
+        //console.log('foo');
     };
-    // public
-    this.killAllJews = function(){
-        console.log('Ok');
-    };
-    // private call
-    killAllJews();
 
+    var self = this;
+
+    var bar = function(){
+        //console.log(self.foo());
+        //this.foo();
+        //TestObject.foo();
+    };
+
+    bar();
 
 }
