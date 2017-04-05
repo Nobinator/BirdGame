@@ -38,7 +38,7 @@ function EnemySpawner(enemies){
         if(getCurrentSpawnRate()<MAX_RATE){
             loop.delay = MAX_RATE - loop.timer.duration;
         }
-        console.log('New Rate : ',getCurrentSpawnRate(););
+        console.log('New Rate : ',getCurrentSpawnRate());
     };
 
     var getCurrentSpawnRate = function(){

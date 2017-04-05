@@ -42,6 +42,10 @@ function create(){
 
     debug();
 
+    g.add.text(8,8, 'v0.2 spawner', {
+        font: "16px Arial",
+        fill: "#000000"});
+
     // Первый запуск всегда начинается с комикса
     /// TODO Временное отключение показа комикса
     //comicsView.showComics(function(){gameManager.start()});
