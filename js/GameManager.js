@@ -15,13 +15,10 @@ function GameManager(){
 
     var spawnloop;
 
-    this.startComics = function(){
-
-    };
-
     this.start = function(){
-        // Повторение enemies.push каждую секунду
-        spawnloop = g.time.events.loop(Phaser.Timer.SECOND, gameObject.enemies.deploy, this);
+
+        //TODO spawner loop
+        enemySpawner.start();
 
         breadparts = 4;
         gameObject.bread.restore();
@@ -36,7 +33,9 @@ function GameManager(){
     };
 
     this.gameover = function(){
-        g.time.events.remove(spawnloop);
+
+        // TODO spawner stop loop
+        enemySpawner.stop();
         gameObject.enemies.undeployAll();
 
         ui.setLeadScore(score);
