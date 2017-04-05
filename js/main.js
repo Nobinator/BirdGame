@@ -8,16 +8,7 @@ var g = new Phaser.Game(768,1366,Phaser.AUTO,'game',{preload: preload,create: cr
 
 */
 
-function scaling(){
-    g.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-    g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    g.scale.pageAlignHorizontally = true;
-    g.scale.pageAlignVertically = true;
-    g.scale.refresh();
-    g.input.maxPointers = 1;
-}
-
-var boot,ui,gameObject,input,gameManager;
+var boot,ui,gameObject,input,gameManager,comicsView;
 
 function preload(){
 
@@ -29,11 +20,12 @@ function preload(){
 
     ui = new Ui();
     gameManager = new GameManager();
+
+    comicsView = new ComicsView();
+    comicsView.init();
 }
 
 function create(){
-
-    //scaling();
 
     g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     g.scale.refresh();
@@ -46,6 +38,9 @@ function create(){
     input.setCurrAction(gameManager.start);
 
     debug();
+
+    // Первый запуск всегда начинается с комикса
+    comicsView.showComics(function(){gameManager.start()});
 }
 
 function update(){
@@ -61,15 +56,15 @@ function update(){
 }
 
 function render(){
-    gameObject.enemies.getBodies().forEach(function(item){
+    /*gameObject.enemies.getBodies().forEach(function(item){
         g.debug.body(item);
     });
 
-    g.debug.body(gameObject.bird.getBody());
+    g.debug.body(gameObject.bird.getBody());*/
 }
 
 function debug(){
-    var graphics = g.add.graphics(0, 0);
+    /*var graphics = g.add.graphics(0, 0);
     graphics.beginFill(0xFF33CC);
     endPoint.forEach(function(it){
         graphics.drawRect(it.x, it.y, 4, 4);
@@ -77,7 +72,7 @@ function debug(){
     graphics.beginFill(0xFFFF66);
     startPoint.forEach(function(it){
         graphics.drawRect(it.x, it.y, 4, 4);
-    });
+    });*/
 
 
     //window.graphics = graphics;

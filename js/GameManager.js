@@ -15,6 +15,10 @@ function GameManager(){
 
     var spawnloop;
 
+    this.startComics = function(){
+
+    };
+
     this.start = function(){
         // Повторение enemies.push каждую секунду
         spawnloop = g.time.events.loop(Phaser.Timer.SECOND, gameObject.enemies.deploy, this);

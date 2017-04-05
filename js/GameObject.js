@@ -226,7 +226,7 @@ function GameObject(){
 
         this.jumpTo = function(wayId){
             sprite.scale.x = (2*(wayId===1 || wayId===3) -1)*sprite.basescale;
-            console.log('moveTo id :',wayId);
+            //console.log('moveTo id :',wayId);
             moveTo(endPoint[wayId]);
         };
 
@@ -236,7 +236,7 @@ function GameObject(){
             g.add.tween(sprite.scale).to({y: sprite.basescale*0.6}, 100, null, true).onComplete.add(function () {
                 //console.log('CompletedA');
                 // Проскальзывание в нужные координаты
-                console.log('moveTo',pos);
+                //console.log('moveTo',pos);
                 g.add.tween(sprite.position).to({x: pos.x, y: pos.y}, 50, null, true).onComplete.add(function () {
                     //console.log('CompletedB');
                     // Разжатие в нормальные размеры
