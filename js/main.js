@@ -1,12 +1,21 @@
 
 // Создаем game instance
-var g = new Phaser.Game(/*window.innerWidth, window.innerHeight*/600,800,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
+var g = new Phaser.Game(768,1366,Phaser.AUTO,'game',{preload: preload,create: create,update: update, render: render});
 
 /*
 
  http://localhost/PhaserProjects/BirdGame/index.html
 
 */
+
+function scaling(){
+    g.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    g.scale.pageAlignHorizontally = true;
+    g.scale.pageAlignVertically = true;
+    g.scale.refresh();
+    g.input.maxPointers = 1;
+}
 
 var boot,ui,gameObject,input,gameManager;
 
@@ -23,6 +32,11 @@ function preload(){
 }
 
 function create(){
+
+    //scaling();
+
+    g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    g.scale.refresh();
 
     boot.setupEnviroment();
     gameObject = new GameObject();
