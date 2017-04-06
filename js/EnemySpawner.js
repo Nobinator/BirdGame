@@ -29,6 +29,7 @@ function EnemySpawner(enemies){
     };
 
     var deployAnEnemy = function(){
+        console.log('deploy');
         e.deploy();
     };
 

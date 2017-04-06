@@ -42,7 +42,7 @@ function create(){
 
     debug();
 
-    g.add.text(8,8, 'v0.2 spawner', {
+    g.add.text(8,8, 'v0.3', {
         font: "16px Arial",
         fill: "#000000"});
 
