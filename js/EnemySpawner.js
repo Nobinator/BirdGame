@@ -18,11 +18,14 @@ function EnemySpawner(enemies){
         //console.log(loop.timer.duration,loop.delay);
         //loop.delay = -400;
         sul = g.time.events.loop(SPEEDUP_RATE, speedUp, this);
+
+        console.log('Циклы запущены : ',loop,sul);
     };
 
     this.stop = function(){
         g.time.events.remove(loop);
         g.time.events.remove(sul);
+        console.log('Циклы остановлены : ',loop,sul);
     };
 
     var deployAnEnemy = function(){

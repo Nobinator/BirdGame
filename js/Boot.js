@@ -13,7 +13,7 @@ function Boot(){
         //g.load.image('bread', 'assets/bread.png');
         g.load.spritesheet('bread', 'assets/breadsheet.png', 128, 128, 5);
         g.load.image('back', 'assets/back.png');
-        g.create.texture('button', ['7'], 80, 80);
+        g.load.image('button', 'assets/button.png');
     };
 
     this.setupEnviroment = function(){

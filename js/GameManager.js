@@ -13,9 +13,13 @@ function GameManager(){
 
     var breadparts;
 
-    var spawnloop;
-
     this.start = function(){
+
+        console.log("Игра начата");
+
+        if(comicsView.isEnabled()){
+            comicsView.stop();
+        }
 
         //TODO spawner loop
         enemySpawner.start();

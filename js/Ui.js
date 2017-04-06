@@ -77,30 +77,20 @@ function Ui(){
             var h = g.world.height;
 
             var bpm = [
-
                 {x: w * (1 / 8), y: h * (7.5 / 10)},
                 {x: w * (7 / 8), y: h * (7.5 / 10)},
                 {x: w * (1 / 8), y: h * (9 / 10)},
                 {x: w * (7 / 8), y: h * (9 / 10)}
             ];
+            var Button = function(id){
+                var b = g.add.button(bpm[id].x, bpm[id].y, 'button', input.bclick, this);
+                b.id = id;
+                b.anchor.setTo(0.5);
+                b.scale.setTo(0.8);
+                return b;
+            };
 
-            var tlb = g.add.button(bpm[0].x, bpm[0].y, 'button', input.bclick, this);
-            tlb.id = 0;
-            tlb.anchor.setTo(0.5);
-
-            var trb = g.add.button(bpm[1].x, bpm[1].y, 'button', input.bclick, this);
-            trb.id = 1;
-            trb.anchor.setTo(0.5);
-
-            var blb = g.add.button(bpm[2].x, bpm[2].y, 'button', input.bclick, this);
-            blb.id = 2;
-            blb.anchor.setTo(0.5);
-
-            var brb = g.add.button(bpm[3].x, bpm[3].y, 'button', input.bclick, this);
-            brb.id = 3;
-            brb.anchor.setTo(0.5);
-
-            return [tlb, trb, blb, brb];
+            return [new Button(0),new Button(1),new Button(2),new Button(3)];
         }());
     };
 

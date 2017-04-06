@@ -48,8 +48,8 @@ function create(){
 
     // Первый запуск всегда начинается с комикса
     /// TODO Временное отключение показа комикса
-    //comicsView.showComics(function(){gameManager.start()});
-    gameManager.start();
+    comicsView.showComics(function(){gameManager.start()});
+    //gameManager.start();
 }
 
 function update(){

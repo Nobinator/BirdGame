@@ -28,8 +28,9 @@ function GameObject(){
                         return n;
                     }
                 }
-                console.log('[ + ] +1 to enemies list. Len : ',container.length);
                 add(1);
+                if(container.length > 20)
+                    console.log('Количество экземпляров врагов слишком большое : ',container.length,'. Проверить исправность.');
 
                 //console.log('[ V ] New ',g.children.length);
                 return container[container.length-1];
@@ -118,7 +119,7 @@ function GameObject(){
                     sprite.body.velocity.x = g.rnd.integerInRange(10, 500);
                 }
                 sprite.body.acceleration.y = 3000;
-                console.log('Kicked!');
+                //console.log('Kicked!');
 
                 status = KICKED;
 
@@ -194,7 +195,7 @@ function GameObject(){
             container.forEach(function(item){
                 set.push(item.getSprite());
             });
-            console.log('New set : '+set);
+            //console.log('New set : '+set);
 
             return set;
         }
