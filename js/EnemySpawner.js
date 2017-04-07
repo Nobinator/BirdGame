@@ -10,23 +10,7 @@ function EnemySpawner(enemies){
 
 
     var e = enemies;
-    var loop,sul;
-
-    this.start = function(){
-        // Повторение enemies.push каждую секунду
-        loop = g.time.events.loop(START_RATE, deployAnEnemy, this);
-        //console.log(loop.timer.duration,loop.delay);
-        //loop.delay = -400;
-        sul = g.time.events.loop(SPEEDUP_RATE, speedUp, this);
-
-        console.log('Циклы запущены : ',loop,sul);
-    };
-
-    this.stop = function(){
-        g.time.events.remove(loop);
-        g.time.events.remove(sul);
-        console.log('Циклы остановлены : ',loop,sul);
-    };
+    var events = g.time.events;
 
     var deployAnEnemy = function(){
         console.log('deploy');
@@ -44,6 +28,24 @@ function EnemySpawner(enemies){
         }
         console.log('New Rate : ',getCurrentSpawnRate());
     };
+
+    var loop = events.loop(START_RATE, deployAnEnemy, this);
+    var sul = events.loop(SPEEDUP_RATE, speedUp, this);
+
+    events.pause();
+
+
+    this.start = function(){
+        events.resume();
+        console.log('Циклы запущены');
+    };
+
+    this.stop = function(){
+        events.pause();
+        console.log('Циклы остановлены');
+    };
+
+
 
     var getCurrentSpawnRate = function(){
         return loop.timer.duration+loop.delay;

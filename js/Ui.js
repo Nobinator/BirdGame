@@ -21,7 +21,7 @@ function Ui(){
     };
 
     this.setLeadScore = function(value){
-        leadPanel[1].setText(value);
+        leadPanel[1].setText('You scored\n\n'+value);
     };
 
     this.loadUi = function() {
@@ -54,7 +54,7 @@ function Ui(){
                 wordWrapWidth: leadback.width,
                 align: "center"
             };
-            var textA = g.add.text(0, 0, 'You scored\n\n502', textAstyle);
+            var textA = g.add.text(0, 0, 'This is\n\nscore text', textAstyle);
             textA.anchor.set(0.5, 0);
             textA.x = g.world.centerX;
             textA.y = g.world.height * (1 / 8);
