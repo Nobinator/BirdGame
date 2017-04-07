@@ -8,16 +8,22 @@ var SPEEDUP_RATE = 5000; // once per 5 sec
 
 function EnemySpawner(enemies){
 
+    var lock = true;
+
 
     var e = enemies;
     var events = g.time.events;
 
     var deployAnEnemy = function(){
+        if(lock)
+            return;
         console.log('deploy');
         e.deploy();
     };
 
     var speedUp = function(){
+        if(lock)
+            return;
 
         if(getCurrentSpawnRate===MAX_RATE)
             return;
@@ -32,16 +38,17 @@ function EnemySpawner(enemies){
     var loop = events.loop(START_RATE, deployAnEnemy, this);
     var sul = events.loop(SPEEDUP_RATE, speedUp, this);
 
-    events.pause();
-
 
     this.start = function(){
-        events.resume();
         console.log('Циклы запущены');
+        events.resume();
+        lock = false;
+        loop.delay = START_RATE;
     };
 
     this.stop = function(){
         events.pause();
+        lock = true;
         console.log('Циклы остановлены');
     };
 

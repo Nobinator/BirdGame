@@ -38,6 +38,8 @@ function GameManager(){
 
     this.gameover = function(){
 
+        console.log("Игра закончена");
+
         // TODO spawner stop loop
         enemySpawner.stop();
         gameObject.enemies.undeployAll();

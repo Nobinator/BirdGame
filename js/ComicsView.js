@@ -38,8 +38,10 @@ function ComicsView(){
             hideComic(comic1,DELAY);
             showComic(comic2,function() {
                     hideComic(comic2,DELAY,function(){
+                        if(status !== CV_DISABLED)
+                            completeCallback();
                         status = CV_DISABLED;
-                        completeCallback();});
+                    });
             },DELAY)
         });
 

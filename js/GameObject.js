@@ -30,7 +30,7 @@ function GameObject(){
                 }
                 add(1);
                 if(container.length > 20)
-                    console.log('Количество экземпляров врагов слишком большое : ',container.length,'. Проверить исправность.');
+                    console.error('Количество экземпляров врагов слишком большое : ',container.length,'. Проверить исправность.');
 
                 //console.log('[ V ] New ',g.children.length);
                 return container[container.length-1];

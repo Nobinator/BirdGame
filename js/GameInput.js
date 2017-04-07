@@ -9,10 +9,12 @@ function GameInput(){
 
     this.click = function(id){
         currAction(id);
+        console.log('click');
     };
 
     this.bclick = function(button){
         currAction(button.id);
+        console.log('bclick');
     };
 
     this.handleI = function(){
@@ -36,7 +38,7 @@ function GameInput(){
 
     this.setCurrAction = function(action){
         currAction = action;
-        //console.log('Input action : ',currAction);
+        console.log('Input action : ',currAction);
     };
 
     this.getCurrAction = function(){return currAction;};
