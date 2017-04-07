@@ -1,11 +1,3 @@
-/**
- * Created by Nobinator on 05.04.2017.
- */
-
-
-
-
-
 function ComicsView(){
 
     const FADEOUT_DURATION = 1000;
@@ -14,63 +6,42 @@ function ComicsView(){
     const CV_DISABLED = 0;
     const CV_ENABLED = 1;
 
-    var comicPackA;
-    var comicPackB;
     var status = CV_DISABLED;
+
+    var comicsPack = [];
 
     this.preload = function(){
 
-        for (var i = 1; i<=2; i++){
+        for (var i = 1; i<=7; i++){
             g.load.image('comic'+i, 'assets/comics/comic'+i+'.png');
-            console.log('Loaded : comic'+i+'.png');
         }
     };
 
-    this.create = function(){
-
-        var loadComics = function(a,b){
-
-            //var pack = [];
-
-            /*for (var i = a; i<=b; i++){
-                var c = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic'+i);
-                console.log('Added : comic'+i);
-                c.anchor.setTo(0.5);
-                pack.push(c);
-                console.log('Pack : '+pack);
-            }*/
-
-            //return pack;
-            var c1 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic1');
-            c1.anchor.setTo(0.5);
-            var c2 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic2');
-            c2.anchor.setTo(0.5);
-            return [c1,c2];
-        };
-
-        comicPackA = loadComics(1,2);
-        console.log('Comic pack :',comicPackA);
+    var co = function(id){
+        var c = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic'+id);
+        c.anchor.setTo(0.5);
+        return c;
     };
 
-    var comic1,comic2;
-    var comicsPack = [];
+    this.showComicsA = function(completeCallback){
 
-    this.showComics = function(completeCallback){
-
-        comic1 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic1');
-        comic2 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic2');
-        comic1.anchor.setTo(0.5);
-        comic2.anchor.setTo(0.5);
-
-        comicsPack[0] = [comic1,comic2];
+        comicsPack[0] = [co(1),co(2)];
 
         status = CV_ENABLED;
         sequense(comicsPack[0],completeCallback);
+    };
 
+    this.showComicsB = function(completeCallback){
+
+        comicsPack[1] = [co(3),co(4),co(5),co(6),co(7)];
+
+        status = CV_ENABLED;
+        sequense(comicsPack[1],completeCallback);
     };
 
     this.stop = function(){
-        resetComic(comicPackA);
+        resetComic(comicsPack[0]);
+        resetComic(comicsPack[1]);
         status = CV_DISABLED;
     };
 
@@ -96,13 +67,13 @@ function ComicsView(){
                 showComic(objs[id+1], inner,id + 1, DELAY);
             }
         };
-        console.log('Sequense : '+objs);
+        //console.log('Sequense : '+objs);
 
         showComic(objs[0],inner,0);
     };
 
     var showComic = function(obj,completeCallback,callBackParams,delay){
-        console.log('showComic : ',obj.key);
+        //console.log('showComic : ',obj.key);
         g.add.tween(obj.position).to({y: g.world.centerY}, MOVE_DURATION, null, true, delay || 0).onComplete.add(
             function(){completeCallback(callBackParams);},this);
     };
@@ -117,7 +88,10 @@ function ComicsView(){
     };
 
     var resetComic = function(objs){
-        console.log('Reset : objs',objs);
+        //console.log('Reset : objs',objs);
+
+        if(typeof(objs) === "undefined")
+            return;
 
         var hde = function(obj){
             g.tweens.removeFrom(obj,true);

@@ -9,12 +9,12 @@ function GameInput(){
 
     this.click = function(id){
         currAction(id);
-        console.log('click');
+        //console.log('click');
     };
 
     this.bclick = function(button){
         currAction(button.id);
-        console.log('bclick');
+        //console.log('bclick');
     };
 
     this.handleI = function(){

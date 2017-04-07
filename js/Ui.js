@@ -3,7 +3,7 @@ function Ui(){
 
     // public methods
     this.showGame = function(){
-        console.log('showGame',gamePanel);
+        //console.log('showGame',gamePanel);
         show(gamePanel);
     };
     this.showLead = function(){

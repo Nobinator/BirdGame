@@ -30,8 +30,6 @@ function create(){
     g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     g.scale.refresh();
 
-    comicsView.create();
-
     boot.setupEnviroment();
     gameObject = new GameObject();
     input = new GameInput();
@@ -50,7 +48,7 @@ function create(){
 
     // Первый запуск всегда начинается с комикса
     /// TODO Временное отключение показа комикса
-    comicsView.showComics(function(){gameManager.start()});
+    comicsView.showComicsA(function(){gameManager.start()});
     //gameManager.start();
 }
 
