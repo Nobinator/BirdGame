@@ -5,6 +5,20 @@
 
 function TestObject(){
 
+    /*var pack = [3,5,6];
+
+    console.log('Pack : '+pack);
+
+    for (var i = 0; i<=9; i++){
+        var c = i*3;
+        pack.push(c);
+    }
+
+
+    console.log('Pack : '+pack);
+
+    return pack;
+    */
 }
 
 

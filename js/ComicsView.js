@@ -14,17 +14,46 @@ function ComicsView(){
     const CV_DISABLED = 0;
     const CV_ENABLED = 1;
 
-
-
-    var comic1,comic2;
-
-    var comicsPack;
+    var comicPackA;
+    var comicPackB;
     var status = CV_DISABLED;
 
-    this.init = function(){
-        g.load.image('comic1', 'assets/comics/comic1.png');
-        g.load.image('comic2', 'assets/comics/comic2.png');
+    this.preload = function(){
+
+        for (var i = 1; i<=2; i++){
+            g.load.image('comic'+i, 'assets/comics/comic'+i+'.png');
+            console.log('Loaded : comic'+i+'.png');
+        }
     };
+
+    this.create = function(){
+
+        var loadComics = function(a,b){
+
+            //var pack = [];
+
+            /*for (var i = a; i<=b; i++){
+                var c = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic'+i);
+                console.log('Added : comic'+i);
+                c.anchor.setTo(0.5);
+                pack.push(c);
+                console.log('Pack : '+pack);
+            }*/
+
+            //return pack;
+            var c1 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic1');
+            c1.anchor.setTo(0.5);
+            var c2 = g.add.sprite(g.world.centerX, g.world.height*1.5, 'comic2');
+            c2.anchor.setTo(0.5);
+            return [c1,c2];
+        };
+
+        comicPackA = loadComics(1,2);
+        console.log('Comic pack :',comicPackA);
+    };
+
+    var comic1,comic2;
+    var comicsPack = [];
 
     this.showComics = function(completeCallback){
 
@@ -36,31 +65,18 @@ function ComicsView(){
         comicsPack[0] = [comic1,comic2];
 
         status = CV_ENABLED;
-
-        /*showComic(comic1,function(){
-            hideComic(comic1,DELAY);
-            showComic(comic2,function() {
-                    hideComic(comic2,DELAY,function(){
-                        if(status !== CV_DISABLED)
-                            completeCallback();
-                        status = CV_DISABLED;
-                    });
-            },DELAY)
-        });*/
-
         sequense(comicsPack[0],completeCallback);
 
     };
 
     this.stop = function(){
-        // TODO Как то раздобыть активные спрайты
-        resetComic(comicsPack[0]);
+        resetComic(comicPackA);
         status = CV_DISABLED;
     };
 
     this.isEnabled = function(){
         return status === CV_ENABLED;
-    }
+    };
 
     // Запускает спрайты один за другим (только не надо засовывать два одинаковых друг за другом)
     var sequense = function(objs,completeCallback){
@@ -80,11 +96,13 @@ function ComicsView(){
                 showComic(objs[id+1], inner,id + 1, DELAY);
             }
         };
+        console.log('Sequense : '+objs);
 
         showComic(objs[0],inner,0);
     };
 
     var showComic = function(obj,completeCallback,callBackParams,delay){
+        console.log('showComic : ',obj.key);
         g.add.tween(obj.position).to({y: g.world.centerY}, MOVE_DURATION, null, true, delay || 0).onComplete.add(
             function(){completeCallback(callBackParams);},this);
     };
@@ -99,11 +117,18 @@ function ComicsView(){
     };
 
     var resetComic = function(objs){
-        objs.forEach(function(obj){
+        console.log('Reset : objs',objs);
+
+        var hde = function(obj){
             g.tweens.removeFrom(obj,true);
             obj.position = { x : g.world.centerX, y : g.world.height*2};
             obj.alpha = 1;
-        });
+        };
+
+        if(objs instanceof Array)
+            objs.forEach(function(item){hde(item)});
+        else
+            hde(objs);
     };
 
 }

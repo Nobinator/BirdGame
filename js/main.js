@@ -22,13 +22,15 @@ function preload(){
     gameManager = new GameManager();
 
     comicsView = new ComicsView();
-    comicsView.init();
+    comicsView.preload();
 }
 
 function create(){
 
     g.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     g.scale.refresh();
+
+    comicsView.create();
 
     boot.setupEnviroment();
     gameObject = new GameObject();

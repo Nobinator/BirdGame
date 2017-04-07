@@ -38,7 +38,7 @@ function GameInput(){
 
     this.setCurrAction = function(action){
         currAction = action;
-        console.log('Input action : ',currAction);
+        //console.log('Input action : ',currAction);
     };
 
     this.getCurrAction = function(){return currAction;};
