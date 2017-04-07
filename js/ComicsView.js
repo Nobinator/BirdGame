@@ -18,6 +18,7 @@ function ComicsView(){
 
     var comic1,comic2;
 
+    var comicsPack;
     var status = CV_DISABLED;
 
     this.init = function(){
@@ -32,9 +33,11 @@ function ComicsView(){
         comic1.anchor.setTo(0.5);
         comic2.anchor.setTo(0.5);
 
+        comicsPack[0] = [comic1,comic2];
+
         status = CV_ENABLED;
 
-        showComic(comic1,function(){
+        /*showComic(comic1,function(){
             hideComic(comic1,DELAY);
             showComic(comic2,function() {
                     hideComic(comic2,DELAY,function(){
@@ -43,13 +46,47 @@ function ComicsView(){
                         status = CV_DISABLED;
                     });
             },DELAY)
-        });
+        });*/
+
+        sequense(comicsPack[0],completeCallback);
 
     };
 
-    var showComic = function(obj,completeCallback,delay){
-        g.add.tween(obj.position).to({y: g.world.centerY}, MOVE_DURATION, null, true, delay || 0).onComplete.add(completeCallback,this);
-        //active.push(obj);
+    this.stop = function(){
+        // TODO Как то раздобыть активные спрайты
+        resetComic(comicsPack[0]);
+        status = CV_DISABLED;
+    };
+
+    this.isEnabled = function(){
+        return status === CV_ENABLED;
+    }
+
+    // Запускает спрайты один за другим (только не надо засовывать два одинаковых друг за другом)
+    var sequense = function(objs,completeCallback){
+
+        var endfu = function(){
+            if(status !== CV_DISABLED)
+                completeCallback();
+            status = CV_DISABLED;
+        };
+
+        var inner = function(id){
+            if(id+1 === objs.length){
+                //last
+                hideComic(objs[id], DELAY,endfu);
+            }else {
+                hideComic(objs[id], DELAY);
+                showComic(objs[id+1], inner,id + 1, DELAY);
+            }
+        };
+
+        showComic(objs[0],inner,0);
+    };
+
+    var showComic = function(obj,completeCallback,callBackParams,delay){
+        g.add.tween(obj.position).to({y: g.world.centerY}, MOVE_DURATION, null, true, delay || 0).onComplete.add(
+            function(){completeCallback(callBackParams);},this);
     };
 
     var hideComic = function(obj,delay,callBack){
@@ -61,23 +98,14 @@ function ComicsView(){
             ,this);
     };
 
-    var resetComic = function(obj){
-        g.tweens.removeFrom(obj,true);
-        obj.position = { x : g.world.centerX, y : g.world.height*2};
-        obj.alpha = 1;
+    var resetComic = function(objs){
+        objs.forEach(function(obj){
+            g.tweens.removeFrom(obj,true);
+            obj.position = { x : g.world.centerX, y : g.world.height*2};
+            obj.alpha = 1;
+        });
     };
 
-    this.stop = function(){
-        // TODO Как то раздобыть активные спрайты
-        resetComic(comic1);
-        resetComic(comic2);
-        status = CV_DISABLED;
-    };
-
-    this.isEnabled = function(){
-        return status === CV_ENABLED;
-    }
-
-};
+}
 
 
