@@ -66,6 +66,7 @@ function GameManager(){
     this.addScore = function(value){
         score += value;
         ui.updateScore(score);
+        enemySpawner.scoreChanged(score);
     }
 
 }

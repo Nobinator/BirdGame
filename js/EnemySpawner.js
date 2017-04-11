@@ -21,6 +21,15 @@ function EnemySpawner(enemies){
         e.deploy();
     };
 
+    this.scoreChanged = function(sc){
+        // speedUp each 15 points
+        if( sc % 15 === 0){
+            speedUp();
+        }
+    };
+
+
+    // Ускорение спавна на RATE_STEP
     var speedUp = function(){
         if(lock)
             return;
@@ -36,7 +45,7 @@ function EnemySpawner(enemies){
     };
 
     var loop = events.loop(START_RATE, deployAnEnemy, this);
-    var sul = events.loop(SPEEDUP_RATE, speedUp, this);
+    //var sul = events.loop(SPEEDUP_RATE, speedUp, this);
 
 
     this.start = function(){
@@ -51,8 +60,6 @@ function EnemySpawner(enemies){
         lock = true;
         console.log('Циклы остановлены');
     };
-
-
 
     var getCurrentSpawnRate = function(){
         return loop.timer.duration+loop.delay;
