@@ -24,10 +24,14 @@ function Ui(){
         leadPanel[1].setText('You scored\n\n'+value);
     };
 
+    this.setLeadList = function(value){
+        leadPanel[2].setText(value);
+    };
+
     this.loadUi = function() {
         gamePanel = (function () {
             var scoreTextStyle = {
-                font: "72px Arial",
+                font: "80px Arial",
                 fill: "#000000",
                 wordWrap: true,
                 wordWrapWidth: g.world.width
@@ -36,7 +40,7 @@ function Ui(){
             var scoreText = g.add.text(0, 0, '0', scoreTextStyle);
             scoreText.anchor.set(0.5, 0);
             scoreText.x = g.world.centerX;
-            scoreText.y = g.world.height * (1 / 8);
+            scoreText.y = g.world.height * (1 / 6);
 
             return [scoreText];
         }());
@@ -48,13 +52,13 @@ function Ui(){
             graphics.destroy();
 
             var textAstyle = {
-                font: "40px Arial",
+                font: "90px Arial",
                 fill: "#000000",
                 wordWrap: true,
                 wordWrapWidth: leadback.width,
                 align: "center"
             };
-            var textA = g.add.text(0, 0, 'This is\n\nscore text', textAstyle);
+            var textA = g.add.text(0, 0, '---', textAstyle);
             textA.anchor.set(0.5, 0);
             textA.x = g.world.centerX;
             textA.y = g.world.height * (1 / 8);

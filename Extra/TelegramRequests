@@ -1,0 +1,77 @@
+    SUCCESS
+
+    {
+        "ok":true,
+        "result":[
+            {
+                "position":1,
+                "user":{
+                    "id":3527572,
+                    "first_name":"Rostislav",
+                    "last_name":"Nikishin",
+                    "username":"Bronydell"
+                },
+                "score":228
+            }
+        ]
+    }
+
+
+
+    SUCCESS MULTIPLE
+
+    {
+        "ok":true,
+        "result":[
+            {
+                "position":1,
+                "user":{
+                    "id":122921921,
+                    "first_name":"Kirill",
+                    "last_name":"Evdokimov",
+                    "username":"Nobinator"
+                },
+                "score":345
+            },
+            {
+                "position":2,
+                "user":{
+                    "id":3527572,
+                    "first_name":"Rostislav",
+                    "last_name":"Nikishin",
+                    "username":"Bronydell"
+                },
+                "score":228
+            }
+        ]
+    }
+
+
+
+    FAILED
+
+    {
+        "ok":false,
+        "error_code":400,
+        "description":"Bad Request: message to get game high scores not found"
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

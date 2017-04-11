@@ -62,9 +62,28 @@ function getHighScores() {
 
     console.log('/api/getHighScores');
 
-    post('/getHighScores', { data: curData}, function(result) {
+    post('/getHighScores', { data: curData}, function(rs) {
         console.log('/api/getHighScores SUCCESS');
-        console.log('getHighScores result',result);
+        console.log('getHighScores result',rs);
+
+        var o = JSON.parse(rs);
+        if(o['ok'] === true){
+
+            var text = '';
+
+            var list = o['result'];
+            list.forEach(function(item){
+                //console.log(item.user.username,item.score);
+                text.concat([
+                        ('0000'+item.score).slice(-4),
+                        ' : ',
+                        item.user.username,
+                        '\n'
+                ]);
+            });
+
+            ui.setLeadList(text);
+        }
         //console.log(result.scores);
     }, function(){
         console.log('/api/getHighScores FAIL');

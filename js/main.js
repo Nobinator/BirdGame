@@ -8,7 +8,7 @@ var g = new Phaser.Game(768,1366,Phaser.AUTO,'game',{preload: preload,create: cr
 
 */
 
-var boot,ui,gameObject,input,gameManager,comicsView,enemySpawner;
+var boot,ui,gameObject,input,gameManager,enemySpawner,net;
 
 function preload(){
 
@@ -21,8 +21,7 @@ function preload(){
     ui = new Ui();
     gameManager = new GameManager();
 
-    comicsView = new ComicsView();
-    comicsView.preload();
+    net = new NetHandler();
 }
 
 function create(){
@@ -40,16 +39,13 @@ function create(){
 
     input.setCurrAction(gameManager.start);
 
+    net.getHighScores();
+
     debug();
 
     g.add.text(8,8, 'v0.3', {
         font: "16px Arial",
         fill: "#000000"});
-
-    // Первый запуск всегда начинается с комикса
-    /// TODO Временное отключение показа комикса
-    comicsView.showComicsA(function(){gameManager.start()});
-    //gameManager.start();
 }
 
 function update(){

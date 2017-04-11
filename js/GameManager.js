@@ -17,10 +17,6 @@ function GameManager(){
 
         console.log("Игра начата");
 
-        if(comicsView.isEnabled()){
-            comicsView.stop();
-        }
-
         //TODO spawner loop
         enemySpawner.start();
 
@@ -28,6 +24,7 @@ function GameManager(){
         gameObject.bread.restore();
 
         score = 0;
+        ui.updateScore(score);
 
         ui.showGame();
         status = START;
@@ -40,12 +37,18 @@ function GameManager(){
 
         console.log("Игра закончена");
 
+        net.sendScore(score);
+
+        net.getHighScores();
+
         // TODO spawner stop loop
         enemySpawner.stop();
         gameObject.enemies.undeployAll();
 
         ui.setLeadScore(score);
         ui.showLead();
+
+
 
         status = GAME_OVER;
 
