@@ -44,7 +44,7 @@ function create(){
 
     debug();
 
-    g.add.text(8,8, 'v0.3', {
+    g.add.text(8,8, 'v0.4net', {
         font: "16px Arial",
         fill: "#000000"});
 }
