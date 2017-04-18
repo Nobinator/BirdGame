@@ -5,7 +5,7 @@ function NetHandler() {
     var curData;
 
     this.poper = function(){
-        post('/telegram', function (data) {
+        post('/telegram/getMe', function (data) {
             console.log(data);
         });
     };
@@ -35,7 +35,7 @@ function NetHandler() {
             console.log("Игра запущена вне telegram или некорректный хеш");
             return;
         }
-        post('/setScore', {
+        post('/telegram/setScore', {
             data: curData,
             score: sc || 0
         }, function (result) {
@@ -57,7 +57,7 @@ function NetHandler() {
             return;
         }
 
-        post('/getHighScores', {data: curData}, function (rs) {
+        post('/telegram/getHighScores', {data: curData}, function (rs) {
 
             console.log("Ответ за запрос по спису результатов : ",rs);
 
