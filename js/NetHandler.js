@@ -2,13 +2,20 @@
 
 function NetHandler() {
 
+
+    const requestA = "/telegram/getMe";
+    const requestB = "/telegram/setScore";
+    const requestC = "/telegram/getHighScores";
+
+
     var curData;
 
     this.poper = function(){
-        post('/telegram/getMe',{}, function (data) {
-            console.log(data);
-        }, function(){
-            console.error("Fail /getMe");
+        console.log("Отправка запроса : ",requestA);
+        post(requestA,{}, function (data) {
+            console.log("Ответ на ",requestA," : ",data);
+        }, function(rdy,sts){
+            console.error("FailCallback для : ",requestA," readyState : ",rdy," status : "+sts);
         });
     };
 
@@ -24,7 +31,7 @@ function NetHandler() {
                 var resp = xhr.responseText;
                 cb(JSON.parse(resp))
             } else if (failCb) {
-                failCb()
+                failCb(xhr.readyState,xhr.status)
             }
         };
         xhr.open("POST", url, true);
@@ -32,36 +39,35 @@ function NetHandler() {
     };
 
     this.sendScore = function(sc) {
-        console.log("Попытка отправить результат");
+        console.log("Отправка запроса : ",requestB, "data : ",curData," score : "+sc);
         if (!curData) {
-            console.log("Игра запущена вне telegram или некорректный хеш");
+            console.error("Игра запущена вне telegram или некорректный хеш");
             return;
         }
-        post('/telegram/setScore', {
+        post(requestB, {
             data: curData,
             score: sc || 0
         }, function (result) {
-            console.log("Результат отправлен. Ответ : ",result);
+            console.log("Ответ на ",requestB," : ",result);
             console.log(result.scores);
             if (result.new) {
                 //ge('score_share').className = 'score_share shown';
             }
-        }, function () {
-            console.log("Результат не отправлен : Запрос ушел с ошибкой или сервер не отвечает");
-            //ge('updating').style.display = 'none';
+        }, function (rdy,sts) {
+            console.error("FailCallback для : ",requestA," readyState : ",rdy," status : "+sts);
         })
     };
 
     this.getHighScores = function() {
-        console.log("Попытка получить список результатов");
+        console.log("Отправка запроса : ",requestC);
         if (!curData){
             console.log("Игра запущена вне telegram или некорректный хеш");
             return;
         }
 
-        post('/telegram/getHighScores', {data: curData}, function (rs) {
+        post(requestC, {data: curData}, function (rs) {
 
-            console.log("Ответ за запрос по спису результатов : ",rs);
+            console.log("Ответ на ",requestA," : ",rs);
 
             if (rs['ok'] === true) {
 
@@ -81,9 +87,9 @@ function NetHandler() {
                 ui.setLeadList(text);
             }
             //console.log(result.scores);
-        }, function () {
-            console.log("Списки результатов не получены : Запрос ушел с ошибкой или сервер не отвечает");
-        })
+        }, function(rdy,sts){
+            console.error("FailCallback для : ",requestC," readyState : ",rdy," status : "+sts);
+        });
     };
 
     var readParameters = function() {
