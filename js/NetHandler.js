@@ -140,7 +140,7 @@ function NetHandler() {
         );
     };*/
 
-    this.req = function(){
+    /*this.req = function(){
         $.ajax({
             type: "POST",
             url: RQ_GETME,
@@ -156,6 +156,27 @@ function NetHandler() {
                 }
             }
         });
+    };*/
+
+    this.req = function(){
+
+        console.log("POST");
+
+        $.post(
+            RQ_SENDMSG,
+            {
+                chat_id: 122921921,
+                text: "Hello"
+            },
+            onAjaxSuccess
+        );
+
+        function onAjaxSuccess(data)
+        {
+            // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
+            alert(data);
+            alert(JSON.stringify(data));
+        }
     };
 
     this.sendScore = function(sc){};
