@@ -160,9 +160,9 @@ function NetHandler() {
 
     this.req = function(){
 
-        console.log("POST");
+        console.log("GET");
 
-        $.post(
+        $.get(
             RQ_SENDMSG,
             {
                 chat_id: 122921921,
