@@ -2,7 +2,7 @@
 
 function NetHandler() {
     const RQ_GETME =        "/telegram/getMe";
-    const RQ_SENDSCORE =    "/telegram/setScore";
+    const RQ_SENDSCORE =    "/telegram/setGameScore";
     const RQ_GETHS =        "/telegram/getGameHighScores";
     const RQ_SENDMSG =      "/telegram/sendMessage";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
@@ -44,7 +44,7 @@ function NetHandler() {
         });
 
     };
-    
+
     var readParameters = function() {
 
         var getHashParams = function() {
