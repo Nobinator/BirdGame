@@ -1,25 +1,19 @@
 
 
 function NetHandler() {
-
-
-    const requestA = "/telegram/getMe";
-    const requestB = "/telegram/setScore";
-    const requestC = "/telegram/getHighScores";
-
+    const RQ_GETME = "/telegram/getMe";
+    const RQ_SENDSCORE = "/telegram/setScore";
+    const RQ_GETHS = "/telegram/getHighScores";
+    const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
     var curData;
-
-    this.poper = function(){
-        console.log("Отправка запроса : ",requestA);
-        post(requestA,{}, function (data) {
-            console.log("Ответ на ",requestA," : ",data);
-        }, function(rdy,sts){
-            console.error("FailCallback для : ",requestA," readyState : ",rdy," status : "+sts);
-        });
-    };
+    var user_id;
+    var inline_message;
 
     var post = function(url, data, cb, failCb) {
+
+        console.log("Отправка запроса : ",url," с параметрами : "+data);
+
         var xhr = new XMLHttpRequest();
         var body = [];
         for (var i in data) {
@@ -31,43 +25,49 @@ function NetHandler() {
                 var resp = xhr.responseText;
                 cb(JSON.parse(resp))
             } else if (failCb) {
-                failCb(xhr.readyState,xhr.status)
+                failCb(xhr.readyState,xhr.status);
+            } else {
+                universalFailCallback(url,xhr.readyState,xhr.status);
             }
         };
         xhr.open("POST", url, true);
         xhr.send(body.join('&'));
     };
 
+    var universalFailCallback = function(url,rdy,sts){
+        console.error("FailCallback для : ",url," readyState : ",rdy," status : "+sts);
+    };
+
+    this.poper = function(){
+        post(RQ_GETME,{}, function (rs) {
+            console.log("Ответ на ",RQ_GETME," : ",rs);
+        });
+    };
+
     this.sendScore = function(sc) {
-        console.log("Отправка запроса : ",requestB, "data : ",curData," score : "+sc);
         if (!curData) {
-            console.error("Игра запущена вне telegram или некорректный хеш");
+            console.error(EMPTY_DATA);
             return;
         }
-        post(requestB, {
-            data: curData,
-            score: sc || 0
-        }, function (result) {
-            console.log("Ответ на ",requestB," : ",result);
-            console.log(result.scores);
-            if (result.new) {
-                //ge('score_share').className = 'score_share shown';
-            }
-        }, function (rdy,sts) {
-            console.error("FailCallback для : ",requestA," readyState : ",rdy," status : "+sts);
+
+        post(RQ_SENDSCORE, {
+            user_id: user_id,
+            score: sc || 0,
+            inline_message_id : inline_message
+        }, function (rs) {
+            console.log("Ответ на ",RQ_SENDSCORE," : ",rs);
         })
     };
 
     this.getHighScores = function() {
-        console.log("Отправка запроса : ",requestC);
         if (!curData){
-            console.log("Игра запущена вне telegram или некорректный хеш");
+            console.log(EMPTY_DATA);
             return;
         }
 
-        post(requestC, {data: curData}, function (rs) {
+        post(RQ_GETHS, { user_id: user_id, inline_message_id : inline_message }, function (rs) {
 
-            console.log("Ответ на ",requestA," : ",rs);
+            console.log("Ответ на ",RQ_GETHS," : ",rs);
 
             if (rs['ok'] === true) {
 
@@ -87,28 +87,22 @@ function NetHandler() {
                 ui.setLeadList(text);
             }
             //console.log(result.scores);
-        }, function(rdy,sts){
-            console.error("FailCallback для : ",requestC," readyState : ",rdy," status : "+sts);
         });
     };
 
     var readParameters = function() {
-
-        //var player_info = g.net.getQueryString()['player_info'];
-
-
         //abc.xyz/gdc/#eyJ1IjoxMjI
         // Получение текста после #
         curData = (location.hash || '').substr(1);
         curData = curData.replace("/[\?&].*/g, ''");
+        var j = JSON.parse(btoa(curData));
+        user_id = j["u"];
+        inline_message = j["i"];
 
-        console.log('curData', curData);
-
-        // curData будет содержать всё необходимое для отправки запросов в telegram,
-        // а она сама получается тоже из телеграма путем махинаций на сервере Ростика.
-        // Не знаю что там творится, главное работает.
-
+        console.info("user_id : ",user_id);
+        console.info("inline_message_id : ",inline_message);
     };
+
 
     readParameters();
 
