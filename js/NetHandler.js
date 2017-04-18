@@ -21,6 +21,7 @@ function NetHandler() {
         for (var i in data) {
             body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
         }
+        console.log(JSON.stringify(body));
         xhr.onreadystatechange = function () {
             //noinspection EqualityComparisonWithCoercionJS
             if (xhr.readyState == 4 && xhr.status == 200) {
