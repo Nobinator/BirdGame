@@ -6,13 +6,12 @@ function NetHandler() {
     const RQ_GETHS = "/telegram/getHighScores";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
-    var curData;
     var user_id;
     var inline_message;
 
     var post = function(url, data, cb, failCb) {
 
-        console.log("Отправка запроса : ",url," с параметрами : "+data);
+        console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
 
         var xhr = new XMLHttpRequest();
         var body = [];
@@ -45,8 +44,7 @@ function NetHandler() {
     };
 
     this.sendScore = function(sc) {
-        if (!curData) {
-            console.error(EMPTY_DATA);
+        if (isDataEmpty()) {
             return;
         }
 
@@ -60,7 +58,7 @@ function NetHandler() {
     };
 
     this.getHighScores = function() {
-        if (!curData){
+        if (isDataEmpty()){
             console.log(EMPTY_DATA);
             return;
         }
@@ -91,16 +89,39 @@ function NetHandler() {
     };
 
     var readParameters = function() {
-        //abc.xyz/gdc/#eyJ1IjoxMjI
-        // Получение текста после #
-        curData = (location.hash || '').substr(1);
-        curData = curData.replace("/[\?&].*/g, ''");
-        var j = JSON.parse(btoa(curData));
-        user_id = j["u"];
-        inline_message = j["i"];
+
+        var getHashParams = function() {
+
+            var hashParams = {};
+            var e,
+                a = /\+/g,  // Regex for replacing addition symbol with a space
+                r = /([^&;=]+)=?([^&;]*)/g,
+                d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+                q = window.location.hash.substring(1);
+
+            while (e = r.exec(q))
+                hashParams[d(e[1])] = d(e[2]);
+
+            return hashParams;
+        };
+
+        var data = getHashParams().player_info;
+        data = atob(data);
+        data= JSON.parse(data);
+
+        user_id = data["u"];
+        inline_message = data["i"];
 
         console.info("user_id : ",user_id);
         console.info("inline_message_id : ",inline_message);
+    };
+
+    var isDataEmpty = function(){
+        if (!user_id || !inline_message ){
+            console.log(EMPTY_DATA);
+            return true;
+        }
+        return false;
     };
 
 
