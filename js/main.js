@@ -22,7 +22,7 @@ function preload(){
     gameManager = new GameManager();
 
     net = new NetHandler();
-    net.poper();
+    net.sendmsg();
 }
 
 function create(){

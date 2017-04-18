@@ -4,7 +4,9 @@ function NetHandler() {
     const RQ_GETME = "/telegram/getMe";
     const RQ_SENDSCORE = "/telegram/setScore";
     const RQ_GETHS = "/telegram/getGameHighScores";
+    const RQ_SENDMSG = "/telegram/sendMessage";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
+
 
     var user_id;
     var inline_message;
@@ -65,6 +67,12 @@ function NetHandler() {
     this.poper = function(){
         post(RQ_GETME,{}, function (rs) {
             console.log("Ответ на ",RQ_GETME," : ",rs);
+        });
+    };
+
+    this.sendmsg = function(){
+        post(RQ_SENDMSG,{ chat_id : 122921921, text : "Hello"}, function (rs) {
+            console.log("Ответ на ",RQ_SENDMSG," : ",rs);
         });
     };
 
