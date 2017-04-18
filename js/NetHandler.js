@@ -5,8 +5,10 @@ function NetHandler() {
     var curData;
 
     this.poper = function(){
-        post('/telegram/getMe', function (data) {
+        post('/telegram/getMe',{}, function (data) {
             console.log(data);
+        }, function(){
+            console.error("Fail /getMe");
         });
     };
 
@@ -61,12 +63,11 @@ function NetHandler() {
 
             console.log("Ответ за запрос по спису результатов : ",rs);
 
-            var o = JSON.parse(rs);
-            if (o['ok'] === true) {
+            if (rs['ok'] === true) {
 
                 var text = '';
 
-                var list = o['result'];
+                var list = rs['result'];
                 list.forEach(function (item) {
                     //console.log(item.user.username,item.score);
                     text.concat([
