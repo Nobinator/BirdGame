@@ -9,6 +9,7 @@ function NetHandler() {
     var user_id;
     var inline_message;
 
+
     var post = function(url, data, cb, failCb) {
 
         console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
@@ -30,6 +31,30 @@ function NetHandler() {
             }
         };
         xhr.open("POST", url, true);
+        xhr.send(body.join('&'));
+    };
+
+    var get = function(url, data, cb, failCb) {
+
+        console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
+
+        var xhr = new XMLHttpRequest();
+        var body = [];
+        for (var i in data) {
+            body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
+        }
+        xhr.onreadystatechange = function () {
+            //noinspection EqualityComparisonWithCoercionJS
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                var resp = xhr.responseText;
+                cb(JSON.parse(resp))
+            } else if (failCb) {
+                failCb(xhr.readyState,xhr.status);
+            } else {
+                universalFailCallback(url,xhr.readyState,xhr.status);
+            }
+        };
+        xhr.open("GET", url, true);
         xhr.send(body.join('&'));
     };
 
@@ -63,7 +88,7 @@ function NetHandler() {
             return;
         }
 
-        post(RQ_GETHS, { user_id: user_id, inline_message_id : inline_message }, function (rs) {
+        get(RQ_GETHS, { user_id: user_id, inline_message_id : inline_message }, function (rs) {
 
             console.log("Ответ на ",RQ_GETHS," : ",rs);
 
