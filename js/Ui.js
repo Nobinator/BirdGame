@@ -1,6 +1,8 @@
 
 function Ui(){
 
+    const EMPTY_LEAD = "Leaderboard are available\nfor Telegram gamers only\n\n@NobiBot ThisIsMyBread";
+
     // public methods
     this.showGame = function(){
         //console.log('showGame',gamePanel);
@@ -69,7 +71,7 @@ function Ui(){
                 wordWrap: true,
                 wordWrapWidth: leadback.width
             };
-            var textB = g.add.text(0, 0, 'Fake Leaderboard\n1. Bronydell - 1024\n2. Nobi - 502\n3. Jacksepticeye - 501', textBstyle);
+            var textB = g.add.text(0, 0, EMPTY_LEAD, textBstyle);
             textB.anchor.set(0.5, 0);
             textB.x = g.world.centerX;
             textB.y = g.world.height * (3 / 8);

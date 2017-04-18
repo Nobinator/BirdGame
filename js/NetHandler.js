@@ -1,13 +1,10 @@
 
 
 function NetHandler() {
-    const RQ_GETME =        "/telegram/getMe";
     const RQ_SENDSCORE =    "/telegram/setGameScore";
     const RQ_GETHS =        "/telegram/getGameHighScores";
-    const RQ_SENDMSG =      "/telegram/sendMessage";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
-    var isTelegramable = false;
 
 
     var user_id;
@@ -39,7 +36,27 @@ function NetHandler() {
 
     this.getHighScores = function(){
 
-        req(RQ_GETHS, { user_id : user_id, inline_message_id : inline_message }, function(){
+        req(RQ_GETHS, { user_id : user_id, inline_message_id : inline_message }, function(data) {
+
+            var j = JSON.parse(data);
+
+            //var s = '{"ok":true,"result":[{"position":1,"user":{"id":3527572,"first_name":"Rostislav","last_name":"Nikishin","username":"Bronydell"},"score":19},{"position":2,"user":{"id":122921921,"first_name":"Kirill","last_name":"Evdokimov","username":"Nobinator"},"score":16}]}';
+
+            var j = JSON.parse(s);
+
+            if (!j){
+                return;
+            }
+
+            var text = '';
+            var list = j['result'];
+            console.log(list);
+            list.forEach(function (item) {
+                text = text.concat([
+                    ('000' + item.score).slice(-4) + ' : ' + item.user.username + '\n'])
+            });
+
+            ui.setLeadList(text);
 
         });
 
@@ -64,9 +81,7 @@ function NetHandler() {
 
         var data = getHashParams().player_info;
 
-        isTelegramable = data;
-
-        if(!isTelegramable) {
+        if(!data) {
             console.log(EMPTY_DATA);
             return;
         }
@@ -79,14 +94,6 @@ function NetHandler() {
 
         console.info("user_id : ",user_id);
         console.info("inline_message_id : ",inline_message);
-    };
-
-    var isDataEmpty = function(){
-        if (!user_id || !inline_message ){
-            console.log(EMPTY_DATA);
-            return true;
-        }
-        return false;
     };
 
 
