@@ -7,183 +7,44 @@ function NetHandler() {
     const RQ_SENDMSG =      "/telegram/sendMessage";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
+    var isTelegramable = false;
+
 
     var user_id;
     var inline_message;
 
-    /*var post = function(url, data, cb, failCb) {
+    var req = function(url,data,callback){
 
-        console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
-
-        var xhr = new XMLHttpRequest();
-        var body = [];
-        for (var i in data) {
-            body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
-        }
-        console.log(JSON.stringify(body));
-        xhr.onreadystatechange = function () {
-            //noinspection EqualityComparisonWithCoercionJS
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var resp = xhr.responseText;
-                cb(JSON.parse(resp))
-            } else if (failCb) {
-                failCb(xhr.readyState,xhr.status);
-            } else {
-                universalFailCallback(url,xhr.readyState,xhr.status);
-            }
-        };
-        xhr.open("POST", url, true);
-        xhr.send(body.join('&'));
-    };
-
-    var get = function(url, data, cb, failCb) {
-
-        console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
-
-        var xhr = new XMLHttpRequest();
-        var body = [];
-        for (var i in data) {
-            body.push(encodeURIComponent(i) + '=' + encodeURIComponent(data[i]))
-        }
-        xhr.onreadystatechange = function () {
-            //noinspection EqualityComparisonWithCoercionJS
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var resp = xhr.responseText;
-                cb(JSON.parse(resp))
-            } else if (failCb) {
-                failCb(xhr.readyState,xhr.status);
-            } else {
-                universalFailCallback(url,xhr.readyState,xhr.status);
-            }
-        };
-        xhr.open("GET", url, true);
-        xhr.send(body.join('&'));
-    };
-
-    var universalFailCallback = function(url,rdy,sts){
-        console.error("FailCallback для : ",url," readyState : ",rdy," status : "+sts);
-    };
-
-    this.poper = function(){
-        post(RQ_GETME,{}, function (rs) {
-            console.log("Ответ на ",RQ_GETME," : ",rs);
-        });
-    };
-
-    this.sendmsg = function(){
-        post(RQ_SENDMSG,{ chat_id : 122921921, text : "Hello"}, function (rs) {
-            console.log("Ответ на ",RQ_SENDMSG," : ",rs);
-        });
-    };
-
-    this.sendScore = function(sc) {
-        if (isDataEmpty()) {
-            return;
-        }
-
-        post(RQ_SENDSCORE, {
-            user_id: user_id,
-            score: sc || 0,
-            inline_message_id : inline_message
-        }, function (rs) {
-            console.log("Ответ на ",RQ_SENDSCORE," : ",rs);
-        })
-    };
-
-    this.getHighScores = function() {
-        if (isDataEmpty()){
-            console.log(EMPTY_DATA);
-            return;
-        }
-
-        get(RQ_GETHS, { user_id: user_id, inline_message_id : inline_message }, function (rs) {
-
-            console.log("Ответ на ",RQ_GETHS," : ",rs);
-
-            if (rs['ok'] === true) {
-
-                var text = '';
-
-                var list = rs['result'];
-                list.forEach(function (item) {
-                    //console.log(item.user.username,item.score);
-                    text.concat([
-                        ('0000' + item.score).slice(-4),
-                        ' : ',
-                        item.user.username,
-                        '\n'
-                    ]);
-                });
-
-                ui.setLeadList(text);
-            }
-            //console.log(result.scores);
-        });
-    };
-    */
-
-    /*var post = function(url,data, succ, done,fail,always){
-        var jqxhr = $.post(url, data, succ)
-            .done(done(ddata))
-            .fail(fail())
-            .always(always());
-    };
-
-    this.sendMsg = function(){
-        post(
-            RQ_SENDMSG,
-            {chat_id : 122921921, text : "Hello"},
-            function(){console.log("succ")},
-            function(data){console.log("done Data loaded : "+JSON.stringify(data))},
-            function(){console.log("fail")},
-            function(){console.log("always")}
-        );
-    };*/
-
-    /*this.req = function(){
-        $.ajax({
-            type: "POST",
-            url: RQ_GETME,
-            data: "",
-            success: function(response, status, xhr){
-                var ct = xhr.getResponseHeader("content-type") || "";
-                if (ct.indexOf('html') > -1) {
-                    //do something
-                }
-                if (ct.indexOf('json') > -1) {
-                    // handle json here
-                    console.log(JSON.stringify(ct.indexOf('json')));
-                }
-            }
-        });
-    };*/
-
-    this.req = function(){
-
-        console.log("GET");
+        console.log("Запрос : ",url, "с параметрами : ",JSON.stringify(data));
 
         $.get(
-            RQ_SENDMSG,
-            {
-                chat_id: 122921921,
-                text: "Hello"
-            },
-            onAjaxSuccess
+            url,
+            data,
+            ajaxCb
         );
 
-        function onAjaxSuccess(data)
-        {
-            // Здесь мы получаем данные, отправленные сервером и выводим их на экран.
-            alert(data);
-            alert(JSON.stringify(data));
+        function ajaxCb(data){
+            console.log("Ответ на ",url, " : ",JSON.stringify(data));
+            callback(data);
         }
     };
 
-    this.sendScore = function(sc){};
+    this.sendScore = function(sc){
 
-    this.getHighScores = function(){};
+        req(RQ_SENDSCORE, { user_id : user_id, score : sc || 0, inline_message_id : inline_message }, function(){
 
+        });
 
+    };
+
+    this.getHighScores = function(){
+
+        req(RQ_GETHS, { user_id : user_id, inline_message_id : inline_message }, function(){
+
+        });
+
+    };
+    
     var readParameters = function() {
 
         var getHashParams = function() {
@@ -202,6 +63,14 @@ function NetHandler() {
         };
 
         var data = getHashParams().player_info;
+
+        isTelegramable = data;
+
+        if(!isTelegramable) {
+            console.log(EMPTY_DATA);
+            return;
+        }
+
         data = atob(data);
         data= JSON.parse(data);
 
@@ -221,6 +90,6 @@ function NetHandler() {
     };
 
 
-    //readParameters();
+    readParameters();
 
 }

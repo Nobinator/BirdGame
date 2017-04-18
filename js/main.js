@@ -22,7 +22,6 @@ function preload(){
     gameManager = new GameManager();
 
     net = new NetHandler();
-    net.req();
 }
 
 function create(){
