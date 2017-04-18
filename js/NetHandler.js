@@ -1,18 +1,17 @@
 
 
 function NetHandler() {
-    const RQ_GETME = "/telegram/getMe";
-    const RQ_SENDSCORE = "/telegram/setScore";
-    const RQ_GETHS = "/telegram/getGameHighScores";
-    const RQ_SENDMSG = "/telegram/sendMessage";
+    const RQ_GETME =        "/telegram/getMe";
+    const RQ_SENDSCORE =    "/telegram/setScore";
+    const RQ_GETHS =        "/telegram/getGameHighScores";
+    const RQ_SENDMSG =      "/telegram/sendMessage";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
 
     var user_id;
     var inline_message;
 
-
-    var post = function(url, data, cb, failCb) {
+    /*var post = function(url, data, cb, failCb) {
 
         console.log("Отправка запроса : ",url," с параметрами : "+JSON.stringify(data));
 
@@ -121,6 +120,48 @@ function NetHandler() {
             //console.log(result.scores);
         });
     };
+    */
+
+    /*var post = function(url,data, succ, done,fail,always){
+        var jqxhr = $.post(url, data, succ)
+            .done(done(ddata))
+            .fail(fail())
+            .always(always());
+    };
+
+    this.sendMsg = function(){
+        post(
+            RQ_SENDMSG,
+            {chat_id : 122921921, text : "Hello"},
+            function(){console.log("succ")},
+            function(data){console.log("done Data loaded : "+JSON.stringify(data))},
+            function(){console.log("fail")},
+            function(){console.log("always")}
+        );
+    };*/
+
+    this.req = function(){
+        $.ajax({
+            type: "POST",
+            url: RQ_GETME,
+            data: "",
+            success: function(response, status, xhr){
+                var ct = xhr.getResponseHeader("content-type") || "";
+                if (ct.indexOf('html') > -1) {
+                    //do something
+                }
+                if (ct.indexOf('json') > -1) {
+                    // handle json here
+                    console.log(JSON.stringify(ct.indexOf('json')));
+                }
+            }
+        });
+    };
+
+    this.sendScore = function(sc){};
+
+    this.getHighScores = function(){};
+
 
     var readParameters = function() {
 
@@ -159,6 +200,6 @@ function NetHandler() {
     };
 
 
-    readParameters();
+    //readParameters();
 
 }
