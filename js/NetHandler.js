@@ -3,7 +3,7 @@
 function NetHandler() {
     const RQ_GETME = "/telegram/getMe";
     const RQ_SENDSCORE = "/telegram/setScore";
-    const RQ_GETHS = "/telegram/getHighScores";
+    const RQ_GETHS = "/telegram/getGameHighScores";
     const EMPTY_DATA = "Игра запущена вне telegram или некорректный хеш";
 
     var user_id;
