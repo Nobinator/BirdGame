@@ -40,10 +40,6 @@ function NetHandler() {
 
             var j = JSON.parse(data);
 
-            //var s = '{"ok":true,"result":[{"position":1,"user":{"id":3527572,"first_name":"Rostislav","last_name":"Nikishin","username":"Bronydell"},"score":19},{"position":2,"user":{"id":122921921,"first_name":"Kirill","last_name":"Evdokimov","username":"Nobinator"},"score":16}]}';
-
-            var j = JSON.parse(s);
-
             if (!j){
                 return;
             }
